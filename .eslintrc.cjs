@@ -1,22 +1,23 @@
 /* eslint-env node */
-require("@rushstack/eslint-patch/modern-module-resolution");
+require('@rushstack/eslint-patch/modern-module-resolution');
 
 module.exports = {
   root: true,
-  extends: [
-    "plugin:vue/vue3-essential",
-    "eslint:recommended",
-    "@vue/eslint-config-typescript",
-    "@vue/eslint-config-prettier/skip-formatting",
-  ],
+  extends: ['prettier', 'plugin:vue/vue3-essential', 'eslint:recommended', '@vue/eslint-config-airbnb-with-typescript'],
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: 'latest',
+    parser: '@typescript-eslint/parser',
   },
+  plugins: ['prettier'],
   rules: {
-    "prettier/prettier": ["error", { endOfLine: "auto" }],
-    "class-methods-use-this": "off",
-    "no-param-reassign": "off",
-    camelcase: "off",
-    "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
+    camelcase: 'off',
+    'no-plusplus': 'off',
+    'vue/max-len': 'off',
+    'linebreak-style': 'off',
+    'no-param-reassign': 'off',
+    'class-methods-use-this': 'off',
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
+    'vue/html-self-closing': ['error', { html: { normal: 'never', void: 'always' } }],
   },
 };
