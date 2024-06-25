@@ -1,8 +1,8 @@
-import type { User } from '@/types/user';
-import { defineStore, storeToRefs } from 'pinia';
+import type { User } from '@/types';
+import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-const authStore = defineStore('auth', () => {
+const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(null);
   const user = ref<User | null>(null);
 
@@ -27,13 +27,6 @@ const authStore = defineStore('auth', () => {
     logout,
     isLoggedIn,
   };
-});
-
-const instance = authStore();
-
-const useAuthStore = () => ({
-  ...instance,
-  ...storeToRefs(instance),
 });
 
 export default useAuthStore;
