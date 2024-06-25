@@ -5,8 +5,20 @@ export default {
   presets: [tailwindConfig],
   content: ['./index.html', './**/*.vue', './node_modules/@storefront-ui/vue/**/*.{js,mjs}'],
   darkMode: 'selector',
+  safelist: [
+    'dark',
+    'w-[calc(50%-8px)]',
+    'w-[calc(33.3333%-8px)]',
+    'w-[calc(25%-8px)]',
+    'w-[calc(20%-8px)]',
+    'w-[calc(16.6667%-8px)]',
+    'w-[calc(25%-8px)]',
+  ],
   theme: {
     extend: {
+      screens: {
+        md: '768px',
+      },
       colors: {
         primary: {
           100: '#f9f0ff',
@@ -45,9 +57,6 @@ export default {
           DEFAULT: '#333333',
         },
       },
-    },
-    typography: {
-      ...tailwindConfig.theme.extend.colors.base,
     },
   },
   plugins: [],
