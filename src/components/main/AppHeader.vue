@@ -602,69 +602,78 @@ type Node = {
 
       <!-- Mobile drawer -->
       <div v-if="isOpen" class="md:hidden fixed inset-0 bg-neutral-500 bg-opacity-50"></div>
-      <SfDrawer
-        ref="drawerRef"
-        v-model="isOpen"
-        placement="left"
-        class="md:hidden right-[50px] max-w-[376px] bg-white overflow-y-auto"
+      <transition
+        enter-active-class="transition duration-500 ease-in-out"
+        leave-active-class="transition duration-500 ease-in-out"
+        enter-from-class="-translate-x-full"
+        enter-to-class="translate-x-0"
+        leave-from-class="translate-x-0"
+        leave-to-class="-translate-x-full"
       >
-        <nav>
-          <div class="flex items-center justify-between p-4 border-b border-b-neutral-200 border-b-solid">
-            <p class="text-base font-medium">Browse products</p>
-            <SfButton variant="tertiary" square aria-label="Close menu" class="ml-2" @click="close()">
-              <SfIconClose class="text-neutral-500" />
-            </SfButton>
-          </div>
-          <ul class="mt-2 mb-6">
-            <li v-if="activeMenu.key !== 'root'">
-              <SfListItem
-                size="lg"
-                tag="button"
-                type="button"
-                class="border-b border-b-neutral-200 border-b-solid"
-                @click="goBack()"
-              >
-                <div class="flex items-center">
-                  <SfIconArrowBack class="text-neutral-500" />
-                  <p class="ml-5 font-medium">{{ activeMenu.value.label }}</p>
-                </div>
-              </SfListItem>
-            </li>
-            <template v-for="node in activeMenu.children" :key="node.value.label">
-              <li v-if="node.isLeaf">
-                <SfListItem size="lg" tag="a" :href="node.value.link" class="first-of-type:mt-2">
+        <SfDrawer
+          ref="drawerRef"
+          v-model="isOpen"
+          placement="left"
+          class="md:hidden right-[100px] max-w-[376px] bg-white overflow-y-auto"
+        >
+          <nav>
+            <div class="flex items-center justify-between p-4 border-b border-b-neutral-200 border-b-solid">
+              <p class="text-base font-medium">Browse products</p>
+              <SfButton variant="tertiary" square aria-label="Close menu" class="ml-2" @click="close()">
+                <SfIconClose class="text-neutral-500" />
+              </SfButton>
+            </div>
+            <ul class="mt-2 mb-6">
+              <li v-if="activeMenu.key !== 'root'">
+                <SfListItem
+                  size="lg"
+                  tag="button"
+                  type="button"
+                  class="border-b border-b-neutral-200 border-b-solid"
+                  @click="goBack()"
+                >
                   <div class="flex items-center">
-                    <p class="text-left">{{ node.value.label }}</p>
-                    <SfCounter class="ml-2">{{ node.value.counter }}</SfCounter>
+                    <SfIconArrowBack class="text-neutral-500" />
+                    <p class="ml-5 font-medium">{{ activeMenu.value.label }}</p>
                   </div>
                 </SfListItem>
               </li>
-              <li v-else>
-                <SfListItem size="lg" tag="button" type="button" @click="goNext(node.key)">
-                  <div class="flex justify-between items-center">
+              <template v-for="node in activeMenu.children" :key="node.value.label">
+                <li v-if="node.isLeaf">
+                  <SfListItem size="lg" tag="a" :href="node.value.link" class="first-of-type:mt-2">
                     <div class="flex items-center">
                       <p class="text-left">{{ node.value.label }}</p>
                       <SfCounter class="ml-2">{{ node.value.counter }}</SfCounter>
                     </div>
-                    <SfIconChevronRight class="text-neutral-500" />
-                  </div>
-                </SfListItem>
-              </li>
-            </template>
-          </ul>
-          <div
-            v-if="bannerNode.value.banner"
-            class="flex items-center overflow-hidden bg-neutral-100 border-neutral-300 grow"
-          >
-            <img
-              :src="bannerNode.value.banner"
-              :alt="bannerNode.value.bannerTitle"
-              class="object-contain w-[50%] basis-6/12"
-            />
-            <p class="basis-6/12 p-6 font-medium text-base">{{ bannerNode.value.bannerTitle }}</p>
-          </div>
-        </nav>
-      </SfDrawer>
+                  </SfListItem>
+                </li>
+                <li v-else>
+                  <SfListItem size="lg" tag="button" type="button" @click="goNext(node.key)">
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center">
+                        <p class="text-left">{{ node.value.label }}</p>
+                        <SfCounter class="ml-2">{{ node.value.counter }}</SfCounter>
+                      </div>
+                      <SfIconChevronRight class="text-neutral-500" />
+                    </div>
+                  </SfListItem>
+                </li>
+              </template>
+            </ul>
+            <div
+              v-if="bannerNode.value.banner"
+              class="flex items-center overflow-hidden bg-neutral-100 border-neutral-300 grow"
+            >
+              <img
+                :src="bannerNode.value.banner"
+                :alt="bannerNode.value.bannerTitle"
+                class="object-contain w-[50%] basis-6/12"
+              />
+              <p class="basis-6/12 p-6 font-medium text-base">{{ bannerNode.value.bannerTitle }}</p>
+            </div>
+          </nav>
+        </SfDrawer>
+      </transition>
     </header>
   </div>
 </template>
