@@ -1,6 +1,5 @@
 import type { Product } from '@/types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const displayProducts: Product[] = [
   {
     id: 1,
