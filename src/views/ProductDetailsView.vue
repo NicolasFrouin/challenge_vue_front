@@ -1,18 +1,40 @@
+<!-- eslint-disable import/no-cycle -->
 <script setup lang="ts">
 import { ProductDetails } from '@/components/product';
-import { displayProducts } from '@/mocks';
+import useAppState from '@/stores/state';
 import type { Product } from '@/types';
-import { useRoute } from 'vue-router';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import NotFoundView from './NotFoundView.vue';
 
-const route = useRoute();
-const { slug } = route.params;
+const router = useRouter();
+const { loading, setLoading } = useAppState();
+const route = router.currentRoute;
+const { slug } = route.value.params;
 
-const product = displayProducts.find((prod) => prod.slug === slug) as Product;
+const product = ref<Product | null>(null);
+
+async function fetchProduct(prodSlug: string): Promise<AxiosResponse<Product>> {
+  const axiosConfig: AxiosRequestConfig = {
+    method: 'GET',
+    url: `https://fakestoreapi.com/products/${prodSlug}`,
+  };
+  return axios.request(axiosConfig);
+}
+
+onMounted(() => {
+  setLoading(true);
+  fetchProduct(slug as string)
+    .then(({ data }) => (product.value = data ?? null))
+    .finally(() => setLoading(false));
+});
 </script>
 
 <template>
-  <h1>ProductDetailsView : {{ slug }}</h1>
-  <div>
-    <ProductDetails class="w-full" :product="product" />
+  <div v-if="!loading">
+    <ProductDetails v-if="product" :product="product" />
+    <NotFoundView v-else />
   </div>
 </template>

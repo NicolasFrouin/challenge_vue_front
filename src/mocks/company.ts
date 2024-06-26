@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export const company = {
   name: 'Vue Storefront',
   address: '1234 Main St.',

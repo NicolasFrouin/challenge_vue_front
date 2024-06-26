@@ -45,7 +45,6 @@ function handleOnChange(event: Event) {
         <SfIconSell size="sm" class="mr-1.5" />
         Sale
       </div>
-      <!-- <h1 class="mb-1 font-bold typography-headline-4">Mini Foldable Drone with HD Camera FPV Wifi RC Quadcopter</h1> -->
       <h1 class="mb-1 font-bold letter text-3xl tracking-wide">
         {{ product.name }}
       </h1>

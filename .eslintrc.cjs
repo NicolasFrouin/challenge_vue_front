@@ -22,9 +22,11 @@ module.exports = {
     'linebreak-style': 'off',
     'no-param-reassign': 'off',
     'class-methods-use-this': 'off',
-    'prettier/prettier': ['error', { endOfLine: 'auto', objectCurlyNewline: false }],
+    'import/prefer-default-export': 'off',
+    'no-return-assign': ['error', 'except-parens'],
     'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
     'vue/object-curly-newline': ['error', { multiline: true, consistent: true }],
+    'prettier/prettier': ['error', { endOfLine: 'auto', objectCurlyNewline: false }],
     'vue/html-self-closing': ['error', { html: { normal: 'never', void: 'always' } }],
   },
 };

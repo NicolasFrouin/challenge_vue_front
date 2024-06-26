@@ -392,7 +392,7 @@ const focusTrigger = (index: number) => {
 const inputValue = ref('');
 
 const search = () => {
-  router.push({ name: 'search', query: { q: inputValue.value, at: Date.now() } });
+  router.push({ name: 'search', query: { q: inputValue.value }, force: true });
 };
 
 const actionItems = [
