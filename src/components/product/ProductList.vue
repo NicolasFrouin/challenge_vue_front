@@ -6,6 +6,7 @@ import { useWindowSize } from '@vueuse/core';
 import type { Product } from '@/types';
 import { LineOf } from '@/types';
 import { routes } from '@/router';
+import { SfLink } from '@storefront-ui/vue';
 
 const { products, lineOf } = defineProps({
   products: {
@@ -41,27 +42,26 @@ const isMobile = computed(() => width.value < 768);
 </script>
 
 <template>
-  <div class="flex flex-row flex-wrap">
-    <article
-      v-for="product in products"
-      :key="product.id"
-      @click.prevent="
-        $router.push({
-          name: routes.productDetails.name,
-          params: { slug: product.slug },
-          state: { slug: product.slug },
-        })
-      "
-      @keydown.enter="
-        $router.push({
-          name: routes.productDetails.name,
-          params: { slug: product.slug },
-          state: { slug: product.slug },
-        })
-      "
-      :class="isMobile ? 'w-full' : `${productCardSize} m-1`"
-    >
-      <Component :is="isMobile ? ProductCardMobile : ProductCardDesktop" :product="product" :key="product.id" />
+  <section class="flex flex-row flex-wrap">
+    <article v-for="product in products" :key="product.id" :class="isMobile ? 'w-full' : `${productCardSize} m-1`">
+      <SfLink
+        :href="
+          $router.resolve({
+            name: routes.productDetails.name,
+            params: { slug: product.id },
+            state: { slug: product.id },
+          }).fullPath
+        "
+        class="no-underline"
+      >
+        <Component :is="isMobile ? ProductCardMobile : ProductCardDesktop" :product="product" :key="product.id" />
+      </SfLink>
     </article>
-  </div>
+  </section>
 </template>
+
+<style>
+article {
+  transition: transform 0.3s;
+}
+</style>

@@ -3,7 +3,7 @@ import { ProductList } from '@/components/product';
 import type { Product } from '@/types';
 import type { AxiosRequestConfig } from 'axios';
 import axios from 'axios';
-import { onMounted, onUnmounted, ref, type Ref } from 'vue';
+import { onMounted, onUnmounted, ref, watchEffect, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const abortController = new AbortController();
@@ -30,6 +30,17 @@ const fetchProducts = async () => {
   );
 };
 
+watchEffect(
+  () => {
+    fetchProducts().then(() => {
+      products.value = products.value.filter((product: Product) =>
+        (product.title as string).toLowerCase().includes((q as string).toLowerCase()),
+      );
+    });
+  },
+  { flush: 'post' },
+);
+
 onMounted(() => {
   fetchProducts().then(() => {
     products.value = products.value.filter((product: Product) =>
@@ -44,8 +55,8 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <h1>Search</h1>
   <div>
-    <h1>Search</h1>
     <ProductList :products="products" />
   </div>
 </template>
