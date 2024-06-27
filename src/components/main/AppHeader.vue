@@ -16,7 +16,7 @@ import {
   SfInput,
   SfIconSearch,
 } from '@storefront-ui/vue';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { unrefElement } from '@vueuse/core';
 import { useRouter } from 'vue-router';
 import { routes } from '@/router';
@@ -424,6 +424,11 @@ type Node = {
   children?: Node[];
   isLeaf: boolean;
 };
+
+onMounted(async () => {
+  await router.isReady();
+  inputValue.value = (router.currentRoute.value.query.q as string) ?? '';
+});
 </script>
 
 <template>
@@ -464,7 +469,7 @@ type Node = {
           <SfInput
             v-model="inputValue"
             type="search"
-            class="[&::-webkit-search-cancel-button]:appearance-none"
+            class="[&::-webkit-search-cancel-button]:appearance-none text-slate-800"
             placeholder="Search"
             wrapper-class="flex-1 h-10 pr-0"
             size="base"

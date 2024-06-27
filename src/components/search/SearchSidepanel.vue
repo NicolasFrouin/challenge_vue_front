@@ -6,7 +6,6 @@ import {
   SfChip,
   SfCheckbox,
   SfCounter,
-  SfIconArrowBack,
   SfIconChevronLeft,
   SfIconCheck,
   SfIconClose,
@@ -16,6 +15,14 @@ import {
   SfSelect,
   SfThumbnail,
 } from '@storefront-ui/vue';
+import { useRouter } from 'vue-router';
+import { routes } from '@/router';
+
+defineEmits(['close']);
+
+const router = useRouter();
+const route = router.currentRoute.value;
+const { categ, price, sort } = route.query as Record<string, string>;
 
 type FilterDetail = {
   id: string;
@@ -138,17 +145,6 @@ const filtersData = ref<Node[]>([
     ],
   },
   {
-    id: 'acc4',
-    summary: 'Brand',
-    type: 'checkbox',
-    details: [
-      { id: 'b1', label: 'Conroy', value: 'conroy', counter: 10 },
-      { id: 'b2', label: 'Goyette', value: 'goyette', counter: 100 },
-      { id: 'b3', label: 'Ledner & Ward', value: 'lednerward', counter: 0 },
-      { id: 'b4', label: 'Pacocha', value: 'pacocha', counter: 3 },
-    ],
-  },
-  {
     id: 'acc5',
     summary: 'Price',
     type: 'radio',
@@ -158,18 +154,6 @@ const filtersData = ref<Node[]>([
       { id: 'pr3', label: '$50.00 - $99.99', value: '50-99', counter: 12 },
       { id: 'pr4', label: '$100.00 - $199.99', value: '100-199', counter: 3 },
       { id: 'pr5', label: '$200.00 and above', value: 'above', counter: 18 },
-    ],
-  },
-  {
-    id: 'acc6',
-    summary: 'Rating',
-    type: 'rating',
-    details: [
-      { id: 'r1', label: '5', value: '5', counter: 10 },
-      { id: 'r2', label: '4 & up', value: '4', counter: 123 },
-      { id: 'r3', label: '3 & up', value: '3', counter: 12 },
-      { id: 'r4', label: '2 & up', value: '2', counter: 3 },
-      { id: 'r5', label: '1 & up', value: '1', counter: 13 },
     ],
   },
 ]);
@@ -182,11 +166,12 @@ const sortOptions = ref([
   { id: 'sort6', label: 'Bestsellers', value: 'bestsellers' },
 ]);
 
-const selectedFilters = ref<string[]>([]);
+// eslint-disable-next-line no-nested-ternary
+const selectedFilters = ref<string[]>(categ ? (Array.isArray(categ) ? categ : [categ]) : []);
 const opened = ref<boolean[]>(filtersData.value.map(() => true));
-const priceModel = ref('');
-const ratingsModel = ref('');
-const sortModel = ref();
+const priceModel = ref(price || '');
+const /** @deprecated */ ratingsModel = ref('');
+const sortModel = ref(sort || 'relevance');
 
 const isItemActive = (selectedValue: string) => {
   return selectedFilters.value?.includes(selectedValue);
@@ -196,19 +181,13 @@ const handleClearFilters = () => {
   priceModel.value = '';
   ratingsModel.value = '';
 };
-const handleSearch = () => {
-  console.log('Selected filters:', selectedFilters.value);
-  console.log('Price model:', priceModel.value);
-  console.log('Ratings model:', ratingsModel.value);
-  console.log('Sort model:', sortModel.value);
-};
 </script>
 
 <template>
-  <aside class="w-full md:max-w-[376px]">
+  <aside class="w-full md:max-w-[25%]">
     <div class="flex justify-between mb-4">
       <h4 class="px-2 font-bold typography-headline-4">List settings</h4>
-      <button type="button" class="sm:hidden text-neutral-500" aria-label="Close filters panel">
+      <button type="button" class="sm:hidden text-red-500" aria-label="Close filters panel" @click="$emit('close')">
         <SfIconClose />
       </button>
     </div>
@@ -245,14 +224,6 @@ const handleSearch = () => {
           </ul>
           <template v-if="type === 'category'">
             <ul class="mt-2 mb-6">
-              <li>
-                <SfListItem size="sm" tag="button" type="button">
-                  <div class="flex items-center">
-                    <SfIconArrowBack size="sm" class="text-neutral-500 mr-3" />
-                    Back to {{ details[0].label }}
-                  </div>
-                </SfListItem>
-              </li>
               <li v-for="({ id, link, label, counter }, categoryIndex) in details" :key="id">
                 <SfListItem
                   size="sm"
@@ -380,7 +351,22 @@ const handleSearch = () => {
     </ul>
     <div class="flex justify-between">
       <SfButton variant="secondary" class="w-full mr-3" @click="handleClearFilters()"> Clear all filters </SfButton>
-      <SfButton class="w-full" @click="handleSearch()">Show products</SfButton>
+      <SfButton
+        class="w-full text-center"
+        tag="a"
+        :href="
+          $router.resolve({
+            name: routes.search.name,
+            query: {
+              categ: selectedFilters,
+              price: priceModel,
+              sort: sortModel,
+            },
+          }).fullPath
+        "
+      >
+        Show products
+      </SfButton>
     </div>
   </aside>
 </template>
