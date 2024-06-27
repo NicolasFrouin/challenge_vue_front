@@ -58,13 +58,17 @@ onUnmounted(() => {
   </h1>
   <div class="md:flex md:flex-row">
     <SfButton v-if="isMobile" class="md:hidden" @click="open"> Open search </SfButton>
-    <SfModal v-if="isMobile" v-model="isOpen">
-      <div>
-        <SearchSidepanel class="border border-solid border-red-500 z-30" />
-        <button @click="close" type="button">Close search</button>
-      </div>
-    </SfModal>
-    <SearchSidepanel v-else class="border border-solid border-red-500" />
+    <SearchSidepanel v-else class="" />
     <ProductList :products="products" :line-of="LineOf.THREE" />
+  </div>
+  <div class="">
+    <SfModal
+      v-if="isMobile"
+      v-model="isOpen"
+      class="fixed bottom-[1vh] top-[13vh] h-[86vh] inset-0 overflow-y-auto m-0 mx-2 pt-4 pb-4 border border-solid border-primary-800 border-spacing-1 rounded-none"
+      :class="{ 'modal-open': isOpen }"
+    >
+      <SearchSidepanel class="rounded-xl" @close="close" />
+    </SfModal>
   </div>
 </template>

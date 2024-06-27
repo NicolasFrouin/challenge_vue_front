@@ -7,11 +7,11 @@ const { product } = defineProps<{ product: Product }>();
 
 <template>
   <div class="border border-neutral-200 rounded-md hover:shadow-lg h-[34rem] z-10 cursor-pointer">
-    <div class="relative flex justify-center mt-1">
+    <div class="flex justify-center mt-1">
       <img
         :src="product.image || 'https://via.placeholder.com/300x300'"
         :alt="`${product.name} image`"
-        class="block object-contain rounded-md aspect-square z-0 h-72 w-72"
+        class="block object-contain rounded-md aspect-square h-72 w-72"
         width="300"
         height="300"
       />
