@@ -1,5 +1,5 @@
 <template>
-  <footer class="pt-10 bg-neutral-100">
+  <footer class="pt-10 bg-neutral-100 z-30">
     <div
       class="grid justify-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] px-4 md:px-6 pb-10 max-w-[1536px] mx-auto"
     >
