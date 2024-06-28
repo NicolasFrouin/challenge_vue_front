@@ -9,10 +9,10 @@ const { loading } = useRefStore(useAppState());
 
 <template>
   <AppHeader />
-  <main class="z-10 m-4 relative border border-solid border-red-500">
+  <main class="z-10 m-4 relative">
     <div
       v-if="loading"
-      class="fixed inset-0 bg-white bg-slate-400 bg-opacity-75 flex items-center justify-center"
+      class="fixed inset-0 bg-white bg-opacity-95 flex items-center justify-center"
       :class="{ loading }"
     >
       <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary-500"></div>
