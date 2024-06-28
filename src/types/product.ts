@@ -15,3 +15,8 @@ export enum LineOf {
   FIVE = 5,
   SIX = 6,
 }
+
+export enum DisplayType {
+  Product = 'product',
+  Cart = 'cart',
+}

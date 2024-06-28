@@ -15,13 +15,17 @@ import {
   useDropdown,
   SfInput,
   SfIconSearch,
+  SfBadge,
 } from '@storefront-ui/vue';
 import { ref, computed, onMounted } from 'vue';
 import { unrefElement } from '@vueuse/core';
 import { useRouter } from 'vue-router';
 import { routes } from '@/router';
+import useCartStore from '@/stores/cart';
+import { useRefStore } from '@/utils/refStore';
 
 const router = useRouter();
+const { totalProducts } = useRefStore(useCartStore());
 
 const handleGoHome = () => router.push({ name: 'home' });
 
@@ -398,7 +402,6 @@ const search = () => {
 const actionItems = [
   {
     icon: SfIconShoppingCart,
-    label: '',
     ariaLabel: 'Cart',
     role: 'button',
     onClick: () => router.push({ name: routes.cart.name }),
@@ -432,8 +435,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="w-full h-full">
-    <header ref="referenceRef" class="relative z-30">
+  <div class="w-full h-full sticky top-0 z-30">
+    <header ref="referenceRef" class="relative">
       <div
         class="flex justify-between items-center flex-wrap md:flex-nowrap px-4 md:px-10 py-2 md:py-5 w-full h-full border-0 bg-primary-700 border-neutral-200 md:h-20 md:z-10"
       >
@@ -495,14 +498,15 @@ onMounted(async () => {
             :key="actionItem.ariaLabel"
             :aria-label="actionItem.ariaLabel"
             @click="actionItem.onClick() ?? null"
-            class="text-white bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white"
+            class="relative text-white bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white"
             variant="tertiary"
             square
           >
             <template #prefix>
               <Component :is="actionItem.icon" />
+              <SfBadge v-if="actionItem.ariaLabel === 'Cart' && totalProducts" :content="totalProducts" />
             </template>
-            <p v-if="actionItem.role === 'login'" class="hidden lg:inline-flex whitespace-nowrap mr-2">
+            <p v-if="actionItem.label" class="hidden lg:inline-flex whitespace-nowrap mr-2">
               {{ actionItem.label }}
             </p>
           </SfButton>
