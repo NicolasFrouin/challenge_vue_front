@@ -2,9 +2,7 @@
 import { ref } from 'vue';
 import {
   SfButton,
-  SfCounter,
   SfLink,
-  SfRating,
   SfIconSafetyCheck,
   SfIconCompareArrows,
   SfIconWarehouse,
@@ -15,12 +13,14 @@ import {
   SfIconAdd,
   SfIconRemove,
   useId,
-  SfIconShoppingCartCheckout,
 } from '@storefront-ui/vue';
 import { useCounter } from '@vueuse/core';
 import type { Product } from '@/types';
+import { useRefStore } from '@/utils/refStore';
+import useCartStore from '@/stores/cart';
 
 const { product } = defineProps<{ product: Product }>();
+const { addProduct } = useRefStore(useCartStore());
 
 const inputId = useId();
 const min = ref(1);
@@ -34,7 +34,7 @@ function handleOnChange(event: Event) {
 </script>
 
 <template>
-  <section class="w-full">
+  <section class="w-full md:px-[10%]">
     <div class="flex justify-center">
       <img :src="product.image" :alt="`${product.name}image`" height="300" width="300" class="object-contain" />
     </div>
@@ -46,22 +46,11 @@ function handleOnChange(event: Event) {
         Sale
       </div>
       <h1 class="mb-1 font-bold letter text-3xl tracking-wide">
-        {{ product.name }}
+        {{ product.name ?? product.title }}
       </h1>
-      <strong class="block font-bold text-5xl tracking-normal">{{ product.price }}€</strong>
-      <div class="inline-flex items-center mt-4 mb-2">
-        <SfRating size="xs" :value="3" :max="5" />
-        <SfCounter class="ml-1" size="xs">123</SfCounter>
-        <SfLink href="#" variant="secondary" class="ml-2 text-xs text-neutral-500"> 123 reviews </SfLink>
-      </div>
+      <strong class="block font-bold text-5xl tracking-normal my-2">{{ product.price }}€</strong>
       <p class="mb-4 font-normal text-sm">{{ product.description }}</p>
       <div class="py-4 mb-4 border-gray-200 border-y">
-        <div
-          class="bg-primary-100 text-primary-700 flex justify-center gap-1.5 py-1.5 text-sm items-center mb-4 rounded-md"
-        >
-          <SfIconShoppingCartCheckout />
-          1 in cart
-        </div>
         <div class="items-start xs:flex">
           <div class="flex flex-col items-stretch xs:items-center xs:inline-flex">
             <div class="flex border border-neutral-300 rounded-md">
@@ -101,7 +90,7 @@ function handleOnChange(event: Event) {
               <strong class="text-neutral-900">{{ max }}</strong> in stock
             </p>
           </div>
-          <SfButton size="lg" class="w-full xs:ml-4">
+          <SfButton size="lg" class="w-max xs:ml-4" @click="addProduct(product, count)">
             <template #prefix>
               <SfIconShoppingCart size="sm" />
             </template>

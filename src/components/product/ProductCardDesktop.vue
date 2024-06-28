@@ -1,8 +1,12 @@
 <script lang="ts" setup>
+import useCartStore from '@/stores/cart';
 import type { Product } from '@/types';
+import { useRefStore } from '@/utils/refStore';
 import { SfRating, SfCounter, SfButton, SfIconShoppingCart } from '@storefront-ui/vue';
 
 const { product } = defineProps<{ product: Product }>();
+
+const { addProduct } = useRefStore(useCartStore());
 </script>
 
 <template>
@@ -35,7 +39,7 @@ const { product } = defineProps<{ product: Product }>();
       </div>
       <div class="mb-1">
         <span class="block pb-2 font-bold text-lg">{{ product.price }}€</span>
-        <SfButton size="sm">
+        <SfButton size="sm" @click.prevent.stop="addProduct(product)" class="z-30">
           <template #prefix>
             <SfIconShoppingCart size="sm" />
           </template>
