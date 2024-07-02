@@ -17,7 +17,7 @@ const { loading } = useRefStore(useAppState());
     >
       <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary-500"></div>
     </div>
-    <RouterView />
+    <RouterView :key="$router.currentRoute.value.fullPath" />
   </main>
   <AppFooter class="z-30" />
 </template>
