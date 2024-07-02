@@ -58,8 +58,8 @@ onUnmounted(() => {
   </h1>
   <div class="md:flex md:flex-row">
     <SfButton v-if="isMobile" class="md:hidden" @click="open"> Open search </SfButton>
-    <SearchSidepanel v-else class="" />
-    <ProductList :products="products" :line-of="LineOf.THREE" />
+    <SearchSidepanel v-else class="flex-[1]" />
+    <ProductList :products="products" :line-of="LineOf.THREE" class="flex-[3]" />
   </div>
   <div class="">
     <SfModal
