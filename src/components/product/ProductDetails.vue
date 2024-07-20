@@ -4,11 +4,8 @@ import {
   SfButton,
   SfLink,
   SfIconSafetyCheck,
-  SfIconCompareArrows,
   SfIconWarehouse,
   SfIconPackage,
-  SfIconFavorite,
-  SfIconSell,
   SfIconShoppingCart,
   SfIconAdd,
   SfIconRemove,
@@ -23,8 +20,8 @@ const { product } = defineProps<{ product: Product }>();
 const { addProduct } = useRefStore(useCartStore());
 
 const inputId = useId();
-const min = ref(1);
-const max = ref(999);
+const min = ref(product.stockVirtual > 0 ? 1 : 0);
+const max = ref(product.stockVirtual);
 const { count, inc, dec, set } = useCounter(1, { min: min.value, max: max.value });
 function handleOnChange(event: Event) {
   const currentValue = (event.target as HTMLInputElement)?.value;
@@ -36,17 +33,17 @@ function handleOnChange(event: Event) {
 <template>
   <section class="w-full md:px-[10%]">
     <div class="flex justify-center">
-      <img :src="product.image" :alt="`${product.name}image`" height="300" width="300" class="object-contain" />
+      <img
+        :src="product.image ?? 'https://via.placeholder.com/300x300'"
+        :alt="`${product.name}image`"
+        height="300"
+        width="300"
+        class="object-contain"
+      />
     </div>
     <div>
-      <div
-        class="inline-flex items-center justify-center text-sm font-medium text-white bg-secondary-600 py-1.5 px-3 mb-4"
-      >
-        <SfIconSell size="sm" class="mr-1.5" />
-        Sale
-      </div>
       <h1 class="mb-1 font-bold letter text-3xl tracking-wide">
-        {{ product.name ?? product.title }}
+        {{ product.name }}
       </h1>
       <strong class="block font-bold text-5xl tracking-normal my-2">{{ product.price }}€</strong>
       <p class="mb-4 font-normal text-sm">{{ product.description }}</p>
@@ -87,26 +84,19 @@ function handleOnChange(event: Event) {
               </SfButton>
             </div>
             <p class="self-center mt-1 mb-4 text-xs text-neutral-500 xs:mb-0">
-              <strong class="text-neutral-900">{{ max }}</strong> in stock
+              <strong class="text-neutral-900">{{ product.stockVirtual }}</strong> in stock
             </p>
           </div>
-          <SfButton size="lg" class="w-max xs:ml-4" @click="addProduct(product, count)">
+          <SfButton
+            size="lg"
+            class="w-max xs:ml-4"
+            @click="addProduct(product, count)"
+            :disabled="product.stockVirtual <= 0"
+          >
             <template #prefix>
               <SfIconShoppingCart size="sm" />
             </template>
             Add to cart
-          </SfButton>
-        </div>
-        <div class="flex justify-center mt-4 gap-x-4">
-          <SfButton size="sm" variant="tertiary">
-            <template #prefix>
-              <SfIconCompareArrows size="sm" />
-            </template>
-            Compare
-          </SfButton>
-          <SfButton size="sm" variant="tertiary">
-            <SfIconFavorite size="sm" />
-            Add to list
           </SfButton>
         </div>
       </div>

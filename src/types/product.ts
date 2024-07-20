@@ -1,11 +1,12 @@
 export type Product = {
   id: number;
   slug: string;
-  name?: string;
-  title?: string;
+  name: string;
   description: string;
   price: number;
   image: string;
+  stockReal: number;
+  stockVirtual: number;
 };
 
 export enum LineOf {
