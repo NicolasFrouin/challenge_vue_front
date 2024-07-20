@@ -1,11 +1,52 @@
+<script setup lang="ts">
+/* eslint-disable import/no-cycle */
+import { ref } from 'vue';
+import axios from 'axios';
+import { apiRoutes } from '@/utils/apiRoutes';
+import { useRefStore } from '@/utils/refStore';
+import useAuthStore from '@/stores/auth';
+import { useRouter } from 'vue-router';
+import { routes } from '@/router';
+
+const { emailLogin } = useRefStore(useAuthStore());
+
+const router = useRouter();
+
+const username = ref('');
+const password = ref('');
+const error = ref('');
+
+const handleSubmit = async () => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: apiRoutes.auth.login,
+      data: {
+        email: username.value,
+        password: password.value,
+      },
+    })
+      .then(({ data }) => data)
+      .catch((err) => (error.value = err));
+    if (response) {
+      const { accessToken, id, role, email } = response;
+      emailLogin(accessToken, { id, role, email });
+      router.push({ name: routes.account.name });
+    }
+  } catch (err) {
+    error.value = 'Email ou mot de passe incorrect';
+  }
+};
+</script>
+
 <template>
   <div class="login-container">
-    <div class="login-form" style="width: 60%;padding-left:5em">
+    <div class="login-form" style="width: 60%; padding-left: 5em">
       <h2 class="titreprincip">Bonjour !</h2>
-      <form @submit.prevent="handleSubmit"  class="form_size">
+      <form @submit.prevent="handleSubmit" class="form_size">
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" v-model="email" required placeholder="Entrez votre email" />
+          <input type="email" id="email" v-model="username" required placeholder="Entrez votre email" />
         </div>
         <div class="form-group">
           <label for="password">Mot de passe</label>
@@ -14,40 +55,22 @@
           </div>
           <a href="#" class="forgot-password">Mot de passe oublié</a>
         </div>
-        <button type="submit" class="login-button" style="background-color: darkgreen;">Login</button>
+        <div v-if="error">
+          <p style="color: red">{{ error }}</p>
+        </div>
+        <button type="submit" class="login-button" style="background-color: darkgreen">Login</button>
       </form>
       <p class="signup-text">Vous n'avez pas de compte ? <a href="#">S'inscrire</a></p>
     </div>
     <div class="login-image">
-      <img src="../../components/img/Background_login.webp" alt="Only Cans" style="width: 100%;background-size: cover;height: 100%;" />
+      <img
+        src="../components/img/Background_login.webp"
+        alt="Only Cans"
+        style="width: 100%; background-size: cover; height: 100%"
+      />
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
-
-const email = ref('');
-const password = ref('');
-const router = useRouter();
-
-const handleSubmit = async () => {
-  try {
-    const response = await axios.post('/api/login', {
-      email: email.value,
-      password: password.value,
-    });
-    const { token, user } = response.data;
-    localStorage.setItem('token', token);
-    router.push('/dashboard');
-  } catch (error) {
-    console.error('Login failed', error);
-    alert('Login failed. Please check your credentials.');
-  }
-};
-</script>
 
 <style scoped>
 .login-container {
@@ -81,16 +104,16 @@ label {
   font-size: 0.9rem;
 }
 
-.titreprincip{
+.titreprincip {
   margin-bottom: 2em;
 }
 
-.form_size{
+.form_size {
   width: 65%;
 }
 
-input[type="email"],
-input[type="password"] {
+input[type='email'],
+input[type='password'] {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -133,7 +156,7 @@ input[type="password"] {
 .signup-text {
   margin-top: 20px;
   font-size: 0.9rem;
-  text-align: center
+  text-align: center;
 }
 
 .signup-text a {

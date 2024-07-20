@@ -57,24 +57,25 @@ onMounted(() => {
 
 <template>
   <div class="flex border-b-[1px] border-neutral-200 hover:shadow-lg min-w-[320px] p-4">
-    <div class="relative overflow-hidden rounded-md w-[100px] sm:w-[176px]">
+    <div class="relative overflow-hidden rounded-md w-[100px] sm:w-[176px] flex-1">
       <img
         class="h-36 w-[100px] sm:h-44 sm:w-44 border rounded-md border-neutral-200 object-contain"
-        :src="
-          product.image ?? 'https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/smartwatch.png'
-        "
+        :src="product.image ?? 'https://via.placeholder.com/300x300'"
         :alt="`${product.name} image`"
         width="100"
         height="144"
       />
-      <div class="absolute top-0 left-0 text-white bg-secondary-600 py-1 pl-1.5 pr-2 text-xs font-medium">
+      <div
+        class="absolute top-0 left-0 text-white bg-secondary-600 py-1 pl-1.5 pr-2 text-xs font-medium"
+        :class="{ 'bg-red-600': product.stockVirtual <= 0 }"
+      >
         <SfIconSell size="xs" class="mr-1" />
-        Sale
+        {{ product.stockVirtual <= 0 ? 'Out of stock' : 'In stock' }}
       </div>
     </div>
-    <div class="flex flex-col pl-4 min-w-[180px]">
+    <div class="flex flex-col pl-4 flex-[3]">
       <span class="wwbw no-underline text-sm sm:text-lg overflow-ellipsis overflow-hidden h-10 sm:max-h-14">
-        {{ product.name ?? product.title }}
+        {{ product.name }}
       </span>
       <div class="my-2 sm:mb-0 h-full flex flex-col justify-between">
         <span
@@ -122,8 +123,8 @@ onMounted(() => {
             class="text-neutral-600 text-xs font-light ml-auto flex items-center px-3 py-1.5 hover:rounded-md hover:bg-neutral-200 hover:text-neutral-900 transition-colors duration-200 ease-in-out"
             @click="handleRemoveProduct"
           >
-            <SfIconDelete />
-            <span class="hidden ml-1.5 sm:block"> Remove </span>
+            <SfIconDelete class="text-red-600" />
+            <span class="hidden ml-1.5 sm:block">Remove</span>
           </button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import {
   SfAccordionItem,
   SfButton,
@@ -15,8 +15,11 @@ import {
   SfSelect,
   SfThumbnail,
 } from '@storefront-ui/vue';
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { routes } from '@/router';
+import axios from 'axios';
+import { apiRoutes } from '@/utils/apiRoutes';
+import type { Category } from '@/types/category';
 
 defineEmits(['close']);
 
@@ -36,142 +39,105 @@ type Node = {
   id: string;
   summary: string;
   type: string;
-  details: FilterDetail[];
+  details: FilterDetail[] | Category[];
 };
 
-const filtersData = ref<Node[]>([
-  {
-    id: 'acc1',
-    summary: 'Size',
-    type: 'size',
-    details: [
-      { id: 's1', label: '6', value: '6', counter: 10 },
-      { id: 's2', label: '6.5', value: '6.5', counter: 10 },
-      { id: 's3', label: '7', value: '7.5', counter: 30 },
-      { id: 's4', label: '8', value: '8', counter: 0 },
-      { id: 's5', label: '8.5', value: '8.5', counter: 3 },
-      { id: 's6', label: '9', value: '9', counter: 7 },
-      { id: 's7', label: '9.5', value: '9.5', counter: 9 },
-      { id: 's8', label: '10', value: '10', counter: 11 },
-      { id: 's9', label: '10.5', value: '10.5', counter: 12 },
-      { id: 's10', label: '11', value: '11', counter: 0 },
-      { id: 's11', label: '11.5', value: '11.5', counter: 4 },
-      { id: 's12', label: '12', value: '12', counter: 1 },
-    ],
-  },
+const filtersData = reactive<Node[]>([
+  // {
+  //   id: 'acc1',
+  //   summary: 'Size',
+  //   type: 'size',
+  //   details: [
+  //     { id: 's1', label: '6', value: '6' },
+  //     { id: 's2', label: '6.5', value: '6.5' },
+  //     { id: 's3', label: '7', value: '7.5' },
+  //     { id: 's4', label: '8', value: '8' },
+  //     { id: 's5', label: '8.5', value: '8.5' },
+  //     { id: 's6', label: '9', value: '9' },
+  //     { id: 's7', label: '9.5', value: '9.5' },
+  //     { id: 's8', label: '10', value: '10' },
+  //     { id: 's9', label: '10.5', value: '10.5' },
+  //     { id: 's10', label: '11', value: '11' },
+  //     { id: 's11', label: '11.5', value: '11.5' },
+  //     { id: 's12', label: '12', value: '12' },
+  //   ],
+  // },
   {
     id: 'acc2',
     summary: 'Category',
     type: 'category',
-    details: [
-      {
-        id: 'CLOTHING',
-        label: 'Clothing',
-        value: 'clothing',
-        counter: 30,
-        link: '#',
-      },
-      {
-        id: 'SHOES',
-        label: 'Shoes',
-        value: 'shoes',
-        counter: 28,
-        link: '#',
-      },
-      {
-        id: 'ACCESSORIES',
-        label: 'Accessories',
-        value: 'accessories',
-        counter: 56,
-        link: '#',
-      },
-      {
-        id: 'WEARABLES',
-        label: 'Wearables',
-        value: 'wearables',
-        counter: 12,
-        link: '#',
-      },
-      {
-        id: 'FOOD_DRINKS',
-        label: 'Food & Drinks',
-        value: 'food and drinks',
-        counter: 52,
-        link: '#',
-      },
-    ],
+    details: [],
   },
-  {
-    id: 'acc3',
-    summary: 'Color',
-    type: 'color',
-    details: [
-      {
-        id: 'c1',
-        label: 'Primary',
-        value: 'bg-primary-500',
-        counter: 10,
-      },
-      {
-        id: 'c2',
-        label: 'Black and gray',
-        value: 'bg-[linear-gradient(-45deg,#000_50%,#d1d5db_50%)]',
-        counter: 5,
-      },
-      {
-        id: 'c3',
-        label: 'Violet',
-        value: 'bg-violet-500',
-        counter: 0,
-      },
-      {
-        id: 'c4',
-        label: 'Red',
-        value: 'bg-red-500',
-        counter: 2,
-      },
-      {
-        id: 'c5',
-        label: 'Yellow',
-        value: 'bg-yellow-500',
-        counter: 100,
-      },
-      {
-        id: 'c6',
-        label: 'Avocado',
-        value: 'bg-gradient-to-tr from-yellow-300 to-primary-500',
-        counter: 14,
-      },
-    ],
-  },
+  // {
+  //   id: 'acc3',
+  //   summary: 'Color',
+  //   type: 'color',
+  //   details: [
+  //     {
+  //       id: 'c1',
+  //       label: 'Primary',
+  //       value: 'bg-primary-500',
+  //       counter: 10,
+  //     },
+  //     {
+  //       id: 'c2',
+  //       label: 'Black and gray',
+  //       value: 'bg-[linear-gradient(-45deg,#000_50%,#d1d5db_50%)]',
+  //       counter: 5,
+  //     },
+  //     {
+  //       id: 'c3',
+  //       label: 'Violet',
+  //       value: 'bg-violet-500',
+  //       counter: 0,
+  //     },
+  //     {
+  //       id: 'c4',
+  //       label: 'Red',
+  //       value: 'bg-red-500',
+  //       counter: 2,
+  //     },
+  //     {
+  //       id: 'c5',
+  //       label: 'Yellow',
+  //       value: 'bg-yellow-500',
+  //       counter: 100,
+  //     },
+  //     {
+  //       id: 'c6',
+  //       label: 'Avocado',
+  //       value: 'bg-gradient-to-tr from-yellow-300 to-primary-500',
+  //       counter: 14,
+  //     },
+  //   ],
+  // },
   {
     id: 'acc5',
     summary: 'Price',
     type: 'radio',
     details: [
-      { id: 'pr1', label: 'Under $24.99', value: 'under', counter: 123 },
-      { id: 'pr2', label: '$25.00 - $49.99', value: '25-49', counter: 100 },
-      { id: 'pr3', label: '$50.00 - $99.99', value: '50-99', counter: 12 },
-      { id: 'pr4', label: '$100.00 - $199.99', value: '100-199', counter: 3 },
-      { id: 'pr5', label: '$200.00 and above', value: 'above', counter: 18 },
+      { id: 'pr1', label: 'Under $24.99', value: 'under' },
+      { id: 'pr2', label: '$25.00 - $49.99', value: '25-49' },
+      { id: 'pr3', label: '$50.00 - $99.99', value: '50-99' },
+      { id: 'pr4', label: '$100.00 - $199.99', value: '100-199' },
+      { id: 'pr5', label: '$200.00 and above', value: 'above' },
     ],
   },
 ]);
 const sortOptions = ref([
   { id: 'sort1', label: 'Relevance', value: 'relevance' },
-  { id: 'sort2', label: 'Price: Low to High', value: 'price low to high' },
-  { id: 'sort3', label: 'Price: High to Low', value: 'price high to low' },
-  { id: 'sort4', label: 'New Arrivals', value: 'new arrivals' },
-  { id: 'sort5', label: 'Customer Rating', value: 'customer rating' },
-  { id: 'sort6', label: 'Bestsellers', value: 'bestsellers' },
+  { id: 'sort2', label: 'Price: Low to High', value: 'lth' },
+  { id: 'sort3', label: 'Price: High to Low', value: 'htl' },
+  { id: 'sort4', label: 'New Arrivals', value: 'new' },
 ]);
 
 // eslint-disable-next-line no-nested-ternary
 const selectedFilters = ref<string[]>(categ ? (Array.isArray(categ) ? categ : [categ]) : []);
-const opened = ref<boolean[]>(filtersData.value.map(() => true));
+const opened = ref<boolean[]>(filtersData.map(() => true));
 const priceModel = ref(price || '');
 const /** @deprecated */ ratingsModel = ref('');
 const sortModel = ref(sort || 'relevance');
+const selectedCategory = ref(route.query.categ || '');
 
 const isItemActive = (selectedValue: string) => {
   return selectedFilters.value?.includes(selectedValue);
@@ -180,7 +146,21 @@ const handleClearFilters = () => {
   selectedFilters.value = [];
   priceModel.value = '';
   ratingsModel.value = '';
+  selectedCategory.value = '';
 };
+
+async function fetchCategories() {
+  axios({
+    method: 'GET',
+    url: apiRoutes.categories.all,
+  }).then(({ data }) => {
+    filtersData[0].details = data;
+  });
+}
+
+onMounted(() => {
+  fetchCategories();
+});
 </script>
 
 <template>
@@ -216,7 +196,7 @@ const handleClearFilters = () => {
             </div>
           </template>
           <ul v-if="type === 'size'" class="grid grid-cols-5 gap-2">
-            <li v-for="{ id, value, counter, label } in details" :key="id">
+            <li v-for="{ id, value, counter, label } in details as FilterDetail[]" :key="id">
               <SfChip v-model="selectedFilters" class="w-full" size="sm" :input-props="{ value, disabled: !counter }">
                 {{ label }}
               </SfChip>
@@ -224,30 +204,40 @@ const handleClearFilters = () => {
           </ul>
           <template v-if="type === 'category'">
             <ul class="mt-2 mb-6">
-              <li v-for="({ id, link, label, counter }, categoryIndex) in details" :key="id">
-                <SfListItem
-                  size="sm"
-                  tag="a"
-                  :href="link"
-                  :class="[
-                    'first-of-type:mt-2 rounded-md active:bg-primary-100',
-                    { 'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium': categoryIndex === 0 },
-                  ]"
+              <li v-for="{ id, slug, name, Products } in details as Category[]" :key="id">
+                <RouterLink
+                  :to="
+                    $router.resolve({
+                      name: routes.search.name,
+                      query: { categ: slug, price: priceModel, sort: sortModel, q: route.query.q },
+                    }).fullPath
+                  "
                 >
-                  <template #suffix>
-                    <SfIconCheck v-if="categoryIndex === 0" size="xs" class="text-primary-700" />
-                  </template>
-                  <span class="flex items-center">
-                    {{ label }}
-                    <SfCounter class="ml-2 typography-text-sm">{{ counter }}</SfCounter>
-                  </span>
-                </SfListItem>
+                  <SfListItem
+                    size="sm"
+                    :class="[
+                      'first-of-type:mt-2 rounded-md active:bg-primary-100',
+                      {
+                        'bg-primary-100 hover:bg-primary-100 active:bg-primary-100 font-medium':
+                          slug === selectedCategory,
+                      },
+                    ]"
+                  >
+                    <template #suffix>
+                      <SfIconCheck v-if="slug === selectedCategory" size="xs" class="text-primary-700" />
+                    </template>
+                    <span class="flex items-center">
+                      {{ name }}
+                      <SfCounter class="ml-2 typography-text-sm">{{ Products?.length }}</SfCounter>
+                    </span>
+                  </SfListItem>
+                </RouterLink>
               </li>
             </ul>
           </template>
           <template v-if="type === 'color'">
             <SfListItem
-              v-for="{ id, value, label, counter } in details"
+              v-for="{ id, value, label, counter } in details as FilterDetail[]"
               :key="id"
               size="sm"
               tag="label"
@@ -270,7 +260,7 @@ const handleClearFilters = () => {
           </template>
           <template v-if="type === 'checkbox'">
             <SfListItem
-              v-for="{ id, value, label, counter } in details"
+              v-for="{ id, value, label, counter } in details as FilterDetail[]"
               :key="id"
               tag="label"
               size="sm"
@@ -294,7 +284,7 @@ const handleClearFilters = () => {
           <template v-if="type === 'radio'">
             <fieldset id="radio-price">
               <SfListItem
-                v-for="{ id, value, label, counter } in details"
+                v-for="{ id, value, label } in details as FilterDetail[]"
                 :key="id"
                 tag="label"
                 size="sm"
@@ -311,7 +301,7 @@ const handleClearFilters = () => {
                 </template>
                 <p>
                   <span :class="['text-sm mr-2', { 'font-medium': priceModel === value }]">{{ label }}</span>
-                  <SfCounter size="sm">{{ counter }}</SfCounter>
+                  <!-- <SfCounter size="sm">{{ counter }}</SfCounter> -->
                 </p>
               </SfListItem>
             </fieldset>
@@ -319,7 +309,7 @@ const handleClearFilters = () => {
           <template v-if="type === 'rating'">
             <fieldset id="radio-ratings">
               <SfListItem
-                v-for="{ id, value, label, counter } in details"
+                v-for="{ id, value, label, counter } in details as FilterDetail[]"
                 :key="id"
                 tag="label"
                 size="sm"
@@ -351,22 +341,22 @@ const handleClearFilters = () => {
     </ul>
     <div class="flex justify-between">
       <SfButton variant="secondary" class="w-full mr-3" @click="handleClearFilters()"> Clear all filters </SfButton>
-      <SfButton
-        class="w-full text-center"
-        tag="a"
-        :href="
+      <RouterLink
+        class="inline-flex items-center justify-center font-medium text-base focus-visible:outline focus-visible:outline-offset rounded-md disabled:text-disabled-500 disabled:shadow-none disabled:ring-0 disabled:cursor-not-allowed py-2 leading-6 px-4 gap-2 text-primary-700 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900 ring-1 ring-inset ring-primary-700 shadow hover:shadow-md active:shadow hover:ring-primary-800 active:ring-primary-900disabled:ring-disabled-300 disabled:bg-white/50 w-full mr-3"
+        :to="
           $router.resolve({
             name: routes.search.name,
             query: {
               categ: selectedFilters,
               price: priceModel,
               sort: sortModel,
+              q: route.query.q,
             },
           }).fullPath
         "
       >
         Show products
-      </SfButton>
+      </RouterLink>
     </div>
   </aside>
 </template>
