@@ -16,18 +16,21 @@ import {
   SfInput,
   SfIconSearch,
   SfBadge,
+  SfTooltip,
+  SfIconLogout,
 } from '@storefront-ui/vue';
 import { ref, computed, onMounted } from 'vue';
 import { unrefElement } from '@vueuse/core';
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { routes } from '@/router';
 import useCartStore from '@/stores/cart';
 import { useRefStore } from '@/utils/refStore';
+import useAuthStore from '@/stores/auth';
+
+const { isLoggedIn, logout } = useRefStore(useAuthStore());
 
 const router = useRouter();
 const { totalProducts } = useRefStore(useCartStore());
-
-const handleGoHome = () => router.push({ name: 'home' });
 
 const findNode = (keys: string[], node: Node): Node => {
   if (keys.length > 1) {
@@ -139,21 +142,31 @@ const search = () => {
   router.push({ name: 'search', query: { q: inputValue.value }, force: true });
 };
 
-const actionItems = [
+const actionItems = computed(() => [
   {
     icon: SfIconShoppingCart,
     ariaLabel: 'Cart',
+    hint: 'Cart',
     role: 'button',
     onClick: () => router.push({ name: routes.cart.name }),
   },
   {
     icon: SfIconPerson,
-    label: 'Log in',
-    ariaLabel: 'Log in',
+    label: isLoggedIn() ? 'My account' : 'Log in',
+    ariaLabel: isLoggedIn() ? 'My account' : 'Log in',
     role: 'login',
-    onClick: () => router.push({ name: routes.login.name }),
+    onClick: () => router.push({ name: isLoggedIn() ? routes.account.name : routes.login.name }),
   },
-];
+  isLoggedIn()
+    ? {
+        icon: SfIconLogout,
+        ariaLabel: 'Logout',
+        hint: 'Logout',
+        role: 'logout',
+        onClick: () => logout(),
+      }
+    : undefined,
+]);
 
 type Node = {
   key: string;
@@ -190,24 +203,16 @@ onMounted(async () => {
           >
             <SfIconMenu class="text-white" />
           </SfButton>
-          <a
-            href="/"
-            aria-label="SF Homepage"
+          <RouterLink
+            to="/"
+            aria-label="Homepage"
             class="flex shrink-0 w-8 h-8 lg:w-[12.5rem] lg:h-[1.75rem] items-center mr-auto text-white md:mr-10 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
-            @click.prevent="handleGoHome"
           >
             <picture>
-              <source
-                srcset="../img/only_cans.jpg"
-                media="(min-width: 80px)"
-              />
-              <img
-                src="../img/only_cans.jpg"
-                alt="Sf Logo"
-                style="width:80px"
-              />
+              <source srcset="../img/only_cans.jpg" media="(min-width: 80px)" />
+              <img src="../img/only_cans.jpg" alt="Sf Logo" style="width: 80px" />
             </picture>
-          </a>
+          </RouterLink>
         </div>
         <form role="search" class="hidden md:flex flex-[100%] ml-10" @submit.prevent="search">
           <SfInput
@@ -234,23 +239,27 @@ onMounted(async () => {
           </SfInput>
         </form>
         <nav class="flex flex-nowrap justify-end items-center md:ml-10 gap-x-1">
-          <SfButton
-            v-for="actionItem in actionItems"
-            :key="actionItem.ariaLabel"
-            :aria-label="actionItem.ariaLabel"
-            @click="actionItem.onClick() ?? null"
-            class="relative text-white bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white"
-            variant="tertiary"
-            square
-          >
-            <template #prefix>
-              <Component :is="actionItem.icon" />
-              <SfBadge v-if="actionItem.ariaLabel === 'Cart' && totalProducts" :content="totalProducts" />
-            </template>
-            <p v-if="actionItem.label" class="hidden lg:inline-flex whitespace-nowrap mr-2">
-              {{ actionItem.label }}
-            </p>
-          </SfButton>
+          <div v-for="actionItem in actionItems" :key="actionItem?.ariaLabel">
+            <SfTooltip :label="actionItem?.hint ?? ''">
+              <SfButton
+                v-if="actionItem"
+                :key="actionItem.ariaLabel"
+                :aria-label="actionItem.ariaLabel"
+                @click="actionItem.onClick() ?? null"
+                class="relative text-white bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white"
+                variant="tertiary"
+                square
+              >
+                <template #prefix>
+                  <Component :is="actionItem.icon" />
+                  <SfBadge v-if="actionItem.ariaLabel === 'Cart' && totalProducts" :content="totalProducts" />
+                </template>
+                <p v-if="actionItem.label" class="hidden lg:inline-flex whitespace-nowrap mr-2">
+                  {{ actionItem.label }}
+                </p>
+              </SfButton>
+            </SfTooltip>
+          </div>
         </nav>
         <form role="search" class="flex md:hidden flex-[100%] my-2" @submit.prevent="search">
           <SfInput

@@ -1,5 +1,7 @@
+/* eslint-disable import/no-cycle */
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { company } from '@/mocks';
+import useAuthStore from '@/stores/auth';
 import HomeView from '../views/HomeView.vue';
 
 export const routes = {
@@ -30,7 +32,7 @@ export const routes = {
   login: {
     path: '/login',
     name: 'login',
-    component: () => import('../views/admin/LoginView.vue'),
+    component: () => import('../views/LoginView.vue'),
     meta: {
       title: 'Login',
     },
@@ -49,6 +51,15 @@ export const routes = {
     component: () => import('../views/CartView.vue'),
     meta: {
       title: 'Cart',
+    },
+  },
+  account: {
+    path: '/account',
+    name: 'account',
+    component: () => import('../views/user/AccountView.vue'),
+    meta: {
+      title: 'Account',
+      requiresAuth: true,
     },
   },
   notFound: {
@@ -73,7 +84,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth /* && !store.getters.isAuthenticated */) {
+  const { isLoggedIn } = useAuthStore();
+  if (to.meta.requiresAuth && !isLoggedIn()) {
     next({ name: 'login', query: { redirect: to.fullPath } });
   }
   document.title = `${to.meta.title ? `${to.meta.title} — ` : ''}${company.name}`;

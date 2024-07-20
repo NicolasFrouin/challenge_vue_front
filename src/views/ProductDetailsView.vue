@@ -7,6 +7,7 @@ import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { apiRoutes } from '@/utils/apiRoutes';
 import NotFoundView from './NotFoundView.vue';
 
 const router = useRouter();
@@ -19,7 +20,7 @@ const product = ref<Product | null>(null);
 async function fetchProduct(prodSlug: string): Promise<AxiosResponse<Product>> {
   const axiosConfig: AxiosRequestConfig = {
     method: 'GET',
-    url: `https://fakestoreapi.com/products/${prodSlug}`,
+    url: apiRoutes.products.bySlug(prodSlug),
   };
   return axios.request(axiosConfig);
 }
