@@ -5,7 +5,7 @@ import axios from 'axios';
 import { apiRoutes } from '@/utils/apiRoutes';
 import { useRefStore } from '@/utils/refStore';
 import useAuthStore from '@/stores/auth';
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { routes } from '@/router';
 
 const { emailLogin } = useRefStore(useAuthStore());
@@ -53,14 +53,17 @@ const handleSubmit = async () => {
           <div class="password-container">
             <input type="password" id="password" v-model="password" required placeholder="Entrez votre mot de passe" />
           </div>
-          <a href="#" class="forgot-password">Mot de passe oublié</a>
+          <!-- <a href="#" class="forgot-password">Mot de passe oublié</a> -->
         </div>
         <div v-if="error">
           <p style="color: red">{{ error }}</p>
         </div>
         <button type="submit" class="login-button" style="background-color: darkgreen">Login</button>
       </form>
-      <p class="signup-text">Vous n'avez pas de compte ? <a href="#">S'inscrire</a></p>
+      <p class="signup-text">
+        Vous n'avez pas de compte ?
+        <RouterLink :to="$router.resolve({ name: routes.register.name })">S'inscrire</RouterLink>
+      </p>
     </div>
     <div class="login-image">
       <img

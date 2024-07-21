@@ -37,6 +37,14 @@ export const routes = {
       title: 'Login',
     },
   },
+  register: {
+    path: '/register',
+    name: 'register',
+    component: () => import('../views/RegisterView.vue'),
+    meta: {
+      title: 'Register',
+    },
+  },
   about: {
     path: '/about',
     name: 'about',
