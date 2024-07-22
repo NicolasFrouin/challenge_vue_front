@@ -19,37 +19,35 @@ import type { Product } from '@/types';
 import { useRefStore } from '@/utils/refStore';
 import useCartStore from '@/stores/cart';
 
-const { product } = defineProps<{ product: Product }>();
+const props = defineProps<{ product: Product }>();
 const { addProduct } = useRefStore(useCartStore());
 
 const inputId = useId();
 const min = ref(1);
 const max = ref(999);
 const { count, inc, dec, set } = useCounter(1, { min: min.value, max: max.value });
-function handleOnChange(event: Event) {
-  const currentValue = (event.target as HTMLInputElement)?.value;
-  const nextValue = parseFloat(currentValue);
+
+const handleOnChange = (event: Event) => {
+  const nextValue = parseFloat((event.target as HTMLInputElement).value);
   set(Math.min(Math.max(nextValue, min.value), max.value));
-}
+};
 </script>
 
 <template>
   <section class="w-full md:px-[10%]">
     <div class="flex justify-center">
-      <img :src="product.image" :alt="`${product.name}image`" height="300" width="300" class="object-contain" />
+      <img :src="props.product.image" :alt="`${props.product.name} image`" height="300" width="300" class="object-contain" />
     </div>
     <div>
-      <div
-        class="inline-flex items-center justify-center text-sm font-medium text-white bg-secondary-600 py-1.5 px-3 mb-4"
-      >
+      <div class="inline-flex items-center justify-center text-sm font-medium text-white bg-secondary-600 py-1.5 px-3 mb-4">
         <SfIconSell size="sm" class="mr-1.5" />
         Sale
       </div>
-      <h1 class="mb-1 font-bold letter text-3xl tracking-wide">
-        {{ product.name ?? product.title }}
+      <h1 class="mb-1 font-bold text-3xl tracking-wide">
+        {{ props.product.name ?? props.product.title }}
       </h1>
-      <strong class="block font-bold text-5xl tracking-normal my-2">{{ product.price }}€</strong>
-      <p class="mb-4 font-normal text-sm">{{ product.description }}</p>
+      <strong class="block font-bold text-5xl my-2">{{ props.product.price }}€</strong>
+      <p class="mb-4 font-normal text-sm">{{ props.product.description }}</p>
       <div class="py-4 mb-4 border-gray-200 border-y">
         <div class="items-start xs:flex">
           <div class="flex flex-col items-stretch xs:items-center xs:inline-flex">
@@ -61,7 +59,7 @@ function handleOnChange(event: Event) {
                 class="rounded-r-none p-3"
                 :aria-controls="inputId"
                 aria-label="Decrease value"
-                @click="dec()"
+                @click="dec"
               >
                 <SfIconRemove />
               </SfButton>
@@ -69,7 +67,7 @@ function handleOnChange(event: Event) {
                 :id="inputId"
                 v-model="count"
                 type="number"
-                class="grow appearance-none mx-2 w-8 text-center bg-transparent font-medium [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-inner-spin-button]:display-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-outer-spin-button]:display-none [&::-webkit-outer-spin-button]:m-0 [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
+                class="grow appearance-none mx-2 w-8 text-center bg-transparent font-medium disabled:placeholder-disabled-900 focus-visible:outline focus-visible:outline-offset focus-visible:rounded-sm"
                 :min="min"
                 :max="max"
                 @input="handleOnChange"
@@ -81,7 +79,7 @@ function handleOnChange(event: Event) {
                 class="rounded-l-none p-3"
                 :aria-controls="inputId"
                 aria-label="Increase value"
-                @click="inc()"
+                @click="inc"
               >
                 <SfIconAdd />
               </SfButton>
@@ -90,7 +88,7 @@ function handleOnChange(event: Event) {
               <strong class="text-neutral-900">{{ max }}</strong> in stock
             </p>
           </div>
-          <SfButton size="lg" class="w-max xs:ml-4" @click="addProduct(product, count)">
+          <SfButton size="lg" class="w-max xs:ml-4" @click="addProduct(props.product, count)">
             <template #prefix>
               <SfIconShoppingCart size="sm" />
             </template>
@@ -110,7 +108,7 @@ function handleOnChange(event: Event) {
           </SfButton>
         </div>
       </div>
-      <div class="flex first:mt-4">
+      <div class="flex mt-4">
         <SfIconPackage size="sm" class="flex-shrink-0 mr-1 text-neutral-500" />
         <p class="text-sm">
           Free shipping, arrives by Thu, Apr 7. Want it faster?

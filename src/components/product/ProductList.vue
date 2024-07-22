@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// eslint-disable-next-line import/no-cycle
 import { ProductCardDesktop, ProductCardMobile } from '@/components/product';
 import { computed, type PropType } from 'vue';
 import { useWindowSize } from '@vueuse/core';
@@ -10,21 +9,22 @@ import { SfLink } from '@storefront-ui/vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const { width } = useWindowSize();
+const isMobile = computed(() => width.value < 768);
 
-const { products, lineOf } = defineProps({
+const props = defineProps({
   products: {
     type: Array as () => Product[],
     required: true,
   },
   lineOf: {
     type: Number as PropType<LineOf>,
-    required: false,
     default: LineOf.FOUR,
   },
 });
 
 const productCardSize = computed(() => {
-  switch (lineOf) {
+  switch (props.lineOf) {
     case LineOf.TWO:
       return 'w-[calc(50%-8px)]';
     case LineOf.THREE:
@@ -39,10 +39,6 @@ const productCardSize = computed(() => {
   }
 });
 
-const { width } = useWindowSize();
-
-const isMobile = computed(() => width.value < 768);
-
 const handleClick = (slug: string) => {
   router.push({
     name: routes.productDetails.name,
@@ -53,7 +49,7 @@ const handleClick = (slug: string) => {
 
 <template>
   <section class="flex flex-row flex-wrap">
-    <article v-for="product in products" :key="product.id" :class="isMobile ? 'w-full' : `${productCardSize} m-1`">
+    <article v-for="product in props.products" :key="product.id" :class="isMobile ? 'w-full' : `${productCardSize.value} m-1`">
       <SfLink
         @click.prevent="handleClick(String(product.id))"
         :href="`${
@@ -64,7 +60,7 @@ const handleClick = (slug: string) => {
         }#top`"
         class="no-underline"
       >
-        <Component :is="isMobile ? ProductCardMobile : ProductCardDesktop" :product="product" :key="product.id" />
+        <component :is="isMobile ? ProductCardMobile : ProductCardDesktop" :product="product" />
       </SfLink>
     </article>
   </section>

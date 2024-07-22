@@ -4,8 +4,7 @@ import type { Product } from '@/types';
 import { useRefStore } from '@/utils/refStore';
 import { SfRating, SfCounter, SfButton, SfIconShoppingCart } from '@storefront-ui/vue';
 
-const { product } = defineProps<{ product: Product }>();
-
+const props = defineProps<{ product: Product }>();
 const { addProduct } = useRefStore(useCartStore());
 </script>
 
@@ -13,8 +12,8 @@ const { addProduct } = useRefStore(useCartStore());
   <div class="border border-neutral-200 rounded-md hover:shadow-lg h-[34rem] z-10 cursor-pointer">
     <div class="flex justify-center mt-1">
       <img
-        :src="product.image || 'https://via.placeholder.com/300x300'"
-        :alt="`${product.name} image`"
+        :src="props.product.image || 'https://via.placeholder.com/300x300'"
+        :alt="`${props.product.name} image`"
         class="block object-contain rounded-md aspect-square h-72 w-72"
         width="300"
         height="300"
@@ -23,7 +22,7 @@ const { addProduct } = useRefStore(useCartStore());
     <div class="p-4 border-t border-neutral-200 flex flex-col justify-between h-64">
       <div>
         <span class="wwbw block no-underline overflow-ellipsis overflow-hidden text-base h-12">
-          {{ product.name ?? product.title }}
+          {{ props.product.name ?? props.product.title }}
         </span>
         <div class="flex items-center pt-1">
           <SfRating size="xs" :value="5" :max="5" />
@@ -31,15 +30,13 @@ const { addProduct } = useRefStore(useCartStore());
             <SfCounter size="xs">123</SfCounter>
           </span>
         </div>
-        <p
-          class="wwbw block py-2 font-normal leading-5 text-sm text-neutral-700 overflow-ellipsis overflow-hidden h-[70px]"
-        >
-          {{ product.description }}
+        <p class="wwbw block py-2 font-normal leading-5 text-sm text-neutral-700 overflow-ellipsis overflow-hidden h-[70px]">
+          {{ props.product.description }}
         </p>
       </div>
       <div class="mb-1">
-        <span class="block pb-2 font-bold text-lg">{{ product.price }}€</span>
-        <SfButton size="sm" @click.prevent.stop="addProduct(product)" class="z-30">
+        <span class="block pb-2 font-bold text-lg">{{ props.product.price }}€</span>
+        <SfButton size="sm" @click.prevent.stop="addProduct(props.product)" class="z-30">
           <template #prefix>
             <SfIconShoppingCart size="sm" />
           </template>
