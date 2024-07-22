@@ -74,11 +74,19 @@ export const routes = {
     path: '/admin',
     name: 'admin',
     component: () => import('../views/admin/AdminView.vue'),
+    meta: {
+      title: 'Admin',
+      requiresAuth: true,
+      requiresAdmin: true,
+    },
     children: [
       {
         path: '',
         name: 'admin-home',
         component: () => import('../views/admin/AdminDashboard.vue'),
+        meta: {
+          title: 'Admin Dashboard',
+        },
       },
       {
         path: 'products',
