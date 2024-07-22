@@ -26,8 +26,9 @@ import { routes } from '@/router';
 import useCartStore from '@/stores/cart';
 import { useRefStore } from '@/utils/refStore';
 import useAuthStore from '@/stores/auth';
+import { Role } from '@/types/user';
 
-const { isLoggedIn, logout } = useRefStore(useAuthStore());
+const { isLoggedIn, logout, hasRights } = useRefStore(useAuthStore());
 
 const router = useRouter();
 const { totalProducts } = useRefStore(useCartStore());
@@ -155,7 +156,11 @@ const actionItems = computed(() => [
     label: isLoggedIn() ? 'My account' : 'Log in',
     ariaLabel: isLoggedIn() ? 'My account' : 'Log in',
     role: 'login',
-    onClick: () => router.push({ name: isLoggedIn() ? routes.account.name : routes.login.name }),
+    onClick: () =>
+      router.push({
+        // eslint-disable-next-line no-nested-ternary
+        name: isLoggedIn() ? (hasRights(Role.Accountant) ? routes.admin.name : routes.account.name) : routes.login.name,
+      }),
   },
   isLoggedIn()
     ? {

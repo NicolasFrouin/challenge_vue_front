@@ -70,6 +70,23 @@ export const routes = {
       requiresAuth: true,
     },
   },
+  admin: {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('../views/admin/AdminView.vue'),
+    children: [
+      {
+        path: '',
+        name: 'admin-home',
+        component: () => import('../views/admin/AdminDashboard.vue'),
+      },
+      {
+        path: 'products',
+        name: 'admin-products',
+        component: () => import('../views/admin/AdminProducts.vue'),
+      },
+    ],
+  },
   notFound: {
     path: '/:pathMatch(.*)*',
     name: 'not-found',

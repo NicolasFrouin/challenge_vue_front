@@ -2,7 +2,8 @@
 /* eslint-disable import/no-cycle */
 import { AppLoading } from '@/components/main';
 import { routes } from '@/router';
-import useRequest from '@/stores/request';
+import type { User } from '@/types';
+import { useRequest } from '@/utils';
 import { apiRoutes } from '@/utils/apiRoutes';
 import { computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
@@ -30,7 +31,7 @@ const formErrors = reactive<{
   confirmPassword: null,
 });
 
-const { error, isLoading, resData, sendRequest } = useRequest(
+const { error, isLoading, resData, sendRequest } = useRequest<User>(
   {
     url: apiRoutes.auth.register,
     method: 'POST',

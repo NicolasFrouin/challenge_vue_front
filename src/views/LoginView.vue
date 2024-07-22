@@ -7,8 +7,9 @@ import { useRefStore } from '@/utils/refStore';
 import useAuthStore from '@/stores/auth';
 import { RouterLink, useRouter } from 'vue-router';
 import { routes } from '@/router';
+import { Role } from '@/types/user';
 
-const { emailLogin } = useRefStore(useAuthStore());
+const { emailLogin, hasRights } = useRefStore(useAuthStore());
 
 const router = useRouter();
 
@@ -31,7 +32,8 @@ const handleSubmit = async () => {
     if (response) {
       const { accessToken, id, role, email } = response;
       emailLogin(accessToken, { id, role, email });
-      router.push({ name: routes.account.name });
+      if (hasRights(Role.Accountant)) router.push({ name: routes.admin.name });
+      else router.push({ name: routes.account.name });
     }
   } catch (err) {
     error.value = 'Email ou mot de passe incorrect';

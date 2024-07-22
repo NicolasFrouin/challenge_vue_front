@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-cycle
 import { routes } from '@/router';
 import type { User } from '@/types';
+import type { Role } from '@/types/user';
 import { apiRoutes } from '@/utils/apiRoutes';
 import axios from 'axios';
 import { defineStore } from 'pinia';
@@ -67,6 +68,10 @@ const useAuthStore = defineStore('auth', () => {
     return token.value !== null && user.value !== null && token.value === getToken();
   }
 
+  function hasRights(role: Role) {
+    return user.value !== null && user.value.role >= role;
+  }
+
   return {
     token,
     user,
@@ -74,6 +79,7 @@ const useAuthStore = defineStore('auth', () => {
     jwtLogin,
     logout,
     isLoggedIn,
+    hasRights,
   };
 });
 
