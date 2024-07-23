@@ -12,4 +12,8 @@ export const apiRoutes = {
     all: `${import.meta.env.VITE_API_URL}/categories`,
     bySlug: (slug: string) => `${import.meta.env.VITE_API_URL}/categories/${slug}`,
   },
+  users: {
+    all: `${import.meta.env.VITE_API_URL}/users`,
+    byId: (id: string) => `${import.meta.env.VITE_API_URL}/users/${id}`,
+  },
 };

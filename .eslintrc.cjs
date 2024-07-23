@@ -19,6 +19,7 @@ module.exports = {
     camelcase: 'off',
     'no-plusplus': 'off',
     'vue/max-len': 'off',
+    'import/no-cycle': 'off',
     'linebreak-style': 'off',
     'no-param-reassign': 'off',
     'class-methods-use-this': 'off',

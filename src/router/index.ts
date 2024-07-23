@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { company } from '@/mocks';
 import useAuthStore from '@/stores/auth';
+import { Role } from '@/types/user';
 import HomeView from '../views/HomeView.vue';
 
 export const routes = {
@@ -9,89 +10,87 @@ export const routes = {
     path: '/',
     name: 'home',
     component: HomeView,
-    meta: {
-      title: 'Home',
-    },
+    meta: { title: 'Home' },
   },
   search: {
     path: '/search',
     name: 'search',
     component: () => import('../views/SearchView.vue'),
-    meta: {
-      title: 'Search Results',
-    },
+    meta: { title: 'Search Results' },
   },
   productDetails: {
     path: '/product/:slug',
     name: 'product-details',
     component: () => import('../views/ProductDetailsView.vue'),
-    meta: {
-      title: 'Product Details',
-    },
+    meta: { title: 'Product Details' },
   },
   login: {
     path: '/login',
     name: 'login',
     component: () => import('../views/LoginView.vue'),
-    meta: {
-      title: 'Login',
-    },
+    meta: { title: 'Login' },
   },
   register: {
     path: '/register',
     name: 'register',
     component: () => import('../views/RegisterView.vue'),
-    meta: {
-      title: 'Register',
-    },
+    meta: { title: 'Register' },
   },
   about: {
     path: '/about',
     name: 'about',
     component: () => import('../views/AboutView.vue'),
-    meta: {
-      title: 'About',
-    },
+    meta: { title: 'About' },
   },
   cart: {
     path: '/cart',
     name: 'cart',
     component: () => import('../views/CartView.vue'),
-    meta: {
-      title: 'Cart',
-    },
+    meta: { title: 'Cart' },
   },
   account: {
     path: '/account',
     name: 'account',
     component: () => import('../views/user/AccountView.vue'),
-    meta: {
-      title: 'Account',
-      requiresAuth: true,
-    },
+    meta: { title: 'Account', requiresAuth: Role.User },
   },
   admin: {
     path: '/admin',
     name: 'admin',
     component: () => import('../views/admin/AdminView.vue'),
-    meta: {
-      title: 'Admin',
-      requiresAuth: true,
-      requiresAdmin: true,
-    },
+    meta: { title: 'Admin Dashboard', requiresAuth: Role.Accountant },
     children: [
       {
         path: '',
         name: 'admin-home',
         component: () => import('../views/admin/AdminDashboard.vue'),
-        meta: {
-          title: 'Admin Dashboard',
-        },
+        meta: { title: 'Admin Dashboard' },
       },
       {
         path: 'products',
         name: 'admin-products',
-        component: () => import('../views/admin/AdminProducts.vue'),
+        component: () => import('../views/admin/products/AdminProducts.vue'),
+        meta: { title: 'Admin Products' },
+        children: [
+          {
+            path: 'new',
+            name: 'admin-new-product',
+            component: () => import('../views/admin/products/AdminNewProduct.vue'),
+            meta: { title: 'New Product' },
+          },
+          {
+            path: ':slug',
+            name: 'admin-edit-product',
+            component: () => import('../views/admin/products/AdminEditProduct.vue'),
+            meta: { title: 'Edit Product' },
+          },
+        ],
+      },
+      {
+        path: 'users',
+        name: 'admin-users',
+        component: () => import('../views/admin/users/AdminUsers.vue'),
+        meta: { title: 'Admin Users', requiresAuth: Role.Admin },
       },
     ],
   },
@@ -117,13 +116,21 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const { isLoggedIn } = useAuthStore();
-  if (to.meta.requiresAuth && !isLoggedIn()) {
-    next({ name: 'login', query: { redirect: to.fullPath } });
+  const { jwtLogin, isLoggedIn, hasToken } = useAuthStore();
+
+  if (to.meta.requiresAuth) {
+    if (!hasToken()) next({ name: 'login', query: { redirect: to.fullPath } });
+    else if (isLoggedIn()) next();
+    else {
+      jwtLogin().then((loggedIn) => next(loggedIn ? to : { name: 'login', query: { redirect: to.fullPath } }));
+    }
+  } else {
+    next();
   }
+});
+
+router.afterEach((to) => {
   document.title = `${to.meta.title ? `${to.meta.title} — ` : ''}${company.name}`;
-  to.hash = '';
-  next();
 });
 
 export default router;

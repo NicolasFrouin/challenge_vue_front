@@ -12,6 +12,11 @@ const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
   const token = ref<string | null>(null);
   const user = ref<User | null>(null);
+  const loading = ref(false);
+
+  function setLoading(value: boolean) {
+    loading.value = value;
+  }
 
   function getToken() {
     return window.document.cookie
@@ -31,6 +36,7 @@ const useAuthStore = defineStore('auth', () => {
   }
 
   async function jwtLogin() {
+    loading.value = true;
     const jwt = getToken();
     if (jwt) {
       token.value = jwt;
@@ -44,10 +50,12 @@ const useAuthStore = defineStore('auth', () => {
       if (response) {
         const { id, email, role } = response;
         user.value = { id, email, role };
+        loading.value = false;
         return true;
       }
       removeToken();
     }
+    loading.value = false;
     return false;
   }
 
@@ -68,6 +76,10 @@ const useAuthStore = defineStore('auth', () => {
     return token.value !== null && user.value !== null && token.value === getToken();
   }
 
+  function hasToken() {
+    return getToken() !== undefined;
+  }
+
   function hasRights(role: Role) {
     return user.value !== null && user.value.role >= role;
   }
@@ -75,10 +87,13 @@ const useAuthStore = defineStore('auth', () => {
   return {
     token,
     user,
+    loading,
+    setLoading,
     emailLogin,
     jwtLogin,
     logout,
     isLoggedIn,
+    hasToken,
     hasRights,
   };
 });
