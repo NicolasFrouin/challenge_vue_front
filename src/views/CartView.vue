@@ -8,7 +8,7 @@ const { cart } = useRefStore(useCartStore());
 </script>
 
 <template>
-  <h1>CartView</h1>
+  <h1>Cart</h1>
   <div>
     <section class="flex flex-col w-full">
       <article v-for="cartItem in cart" :key="cartItem.product.id">

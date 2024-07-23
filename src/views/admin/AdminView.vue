@@ -6,6 +6,6 @@ import { RouterView } from 'vue-router';
 <template>
   <div class="flex flex-row justify-between">
     <AdminSidepanel />
-    <RouterView class="max-w-3xl" />
+    <RouterView class="w-full" />
   </div>
 </template>
