@@ -22,4 +22,11 @@ export const apiRoutes = {
     delete: (id: string) => `${import.meta.env.VITE_API_URL}/users/${id}`,
     edit: (id: string) => `${import.meta.env.VITE_API_URL}/users/${id}`,
   },
+  order: {
+    all: `${import.meta.env.VITE_API_URL}/orders`,
+    byId: (id: string) => `${import.meta.env.VITE_API_URL}/orders/${id}`,
+    delete: (id: string) => `${import.meta.env.VITE_API_URL}/orders/${id}`,
+    edit: (id: string) => `${import.meta.env.VITE_API_URL}/orders/${id}`,
+    new: `${import.meta.env.VITE_API_URL}/orders`,
+  },
 };

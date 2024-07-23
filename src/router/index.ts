@@ -54,6 +54,12 @@ export const routes = {
     component: () => import('../views/user/AccountView.vue'),
     meta: { title: 'Account', requiresAuth: Role.User },
   },
+  checkout: {
+    path: '/checkout',
+    name: 'checkout',
+    component: () => import('../views/user/CheckoutView.vue'),
+    meta: { title: 'Checkout', requiresAuth: Role.User },
+  },
   admin: {
     path: '/admin',
     name: 'admin',
