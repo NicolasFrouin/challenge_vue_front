@@ -1,17 +1,17 @@
 <template>
     <AppWidget
-      titre="Ventes par Catégorie ce mois"
-      :type="DoughnutChart"
-      :data="[40, 70, 60, 43, 104]"
-      :colors="['#FE828C', '#D66F78', '#D84A57', '#FF9DA4', '#FF4856']"
-      :labels="['Boisson Gazeuse','Boisson Plate','Boisson Sans Sucre','Edition Limité','Autre']"
-      label=""
-      :width="800"
-      :height="800"
+      titre="Ventes par Année"
+      :type="BarChart"
+      :data="[1000, 1345, 1289, 1403, 1467]"
+      :colors="['#FE828C']"
+      :labels="['2020', '2021', '2022', '2023', '2024']"
+      label="Ventes"
+      :width="400"
+      :height="400"
     />
   </template>
   
   <script setup lang="ts">
-  import { DoughnutChart } from 'vue-chart-3';
+  import { BarChart } from 'vue-chart-3';
   import AppWidget from '@/components/admin/AppWidget.vue';
   </script>
