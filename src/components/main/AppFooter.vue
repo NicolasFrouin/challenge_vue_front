@@ -1,184 +1,59 @@
 <template>
-  <footer class="pt-10 bg-neutral-100 z-30">
-    <div
-      class="grid justify-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] px-4 md:px-6 pb-10 max-w-[1536px] mx-auto"
-    >
-      <ul v-for="{ label, subcategories } in categories" :key="label" class="grid grid-cols xs:pb-4">
-        <li class="ml-4 text-lg font-medium leading-7 text-neutral-900 font-body">{{ label }}</li>
-        <SfListItem
-          v-for="{ subcategoryLabel, link } in subcategories"
-          :key="subcategoryLabel"
-          class="py-2 !bg-transparent text-sm font-body"
-        >
-          <SfLink
-            class="no-underline text-neutral-600 hover:underline hover:!text-neutral-900 active:underline active:!text-neutral-900"
-            variant="secondary"
-            :href="link"
-          >
-            {{ subcategoryLabel }}
-          </SfLink>
-        </SfListItem>
-      </ul>
-    </div>
-    <hr />
-    <div class="py-10 md:flex md:mx-auto max-w-[1536px]">
-      <div v-for="{ label, icon, link, details } in contactOptions" :key="label" class="mx-auto my-4 text-center">
-        <component :is="icon" size="lg" />
-        <p class="py-1 my-2 font-medium text-lg font-body">
-          <SfLink
-            variant="secondary"
-            class="no-underline text-neutral-600 hover:underline hover:!text-neutral-900 active:underline active:!text-neutral-900"
-            :href="link"
-          >
-            {{ label }}
-          </SfLink>
-        </p>
-        <p v-for="option in details" :key="option" class="leading-5 text-sm text-neutral-600 font-body">
-          {{ option }}
-        </p>
+  <footer class="bg-gray-900 text-gray-300 py-8">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
+      <!-- Left Section -->
+      <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
+        <img src="@/components/img/only_cans.jpg" alt="OnlyCans Logo" class="w-24 h-24">
+        <div>
+          <p>27 Rue Jean Moulin, Paris</p>
+          <p>75014</p>
+          <p>01.86.57.45.25</p>
+          <p><a href="mailto:contact.onlycans@gmail.com" class="underline">contact.onlycans@gmail.com</a></p>
+        </div>
       </div>
-    </div>
-    <div class="bg-neutral-900 justify-end px-4 py-10 md:flex md:py-6 max-w-[1536px] mx-auto">
-      <div class="flex justify-center py-2 gap-x-4 md:self-start">
+
+      <!-- Center Section -->
+      <div class="flex space-x-8">
+        <a href="#" class="hover:underline">About</a>
+        <a href="#" class="hover:underline">Growers</a>
+        <a href="#" class="hover:underline">Merchants</a>
+        <a href="#" class="hover:underline">Partners</a>
+        <a href="#" class="hover:underline">Contact</a>
+        <a href="/confidentialite" class="hover:underline">Politique de confidentialité</a>
+      </div>
+
+      <!-- Right Section -->
+      <div class="flex space-x-4 items-center">
         <SfButton
           v-for="{ label, link, icon } in socialMedia"
           :key="label"
           tag="a"
           square
           variant="tertiary"
-          class="text-white active:text-white hover:text-white hover:!bg-neutral-500 active:!bg-transparent"
+          class="w-10 h-10 bg-white text-gray-900 rounded-full flex items-center justify-center hover:bg-neutral-500"
           :href="link"
           :aria-label="`Go to ${label} page`"
         >
           <component :is="icon" />
         </SfButton>
       </div>
-      <div class="flex items-center justify-center gap-6 py-2 my-4 md:ml-auto md:my-0">
-        <SfLink
-          v-for="{ label, link } in bottomLinks"
-          :key="label"
-          variant="secondary"
-          class="text-white no-underline text-sm active:text-white active:underline hover:text-white hover:underline"
-          :href="link"
-        >
-          {{ label }}
-        </SfLink>
-      </div>
-      <p class="flex items-center justify-center py-2 leading-5 text-center text-sm text-white/50 font-body md:ml-6">
-        @2024 Alokai
-      </p>
+    </div>
+    <div class="container mx-auto text-center mt-8">
+      <p>&copy; 2024 OnlyCans. Tout droit réservées.</p>
     </div>
   </footer>
 </template>
-<script lang="ts" setup>
+
+<script setup lang="ts">
 import {
-  SfIconContactSupport,
   SfIconFacebook,
-  SfIconHelp,
   SfIconInstagram,
-  SfIconCall,
-  SfIconPinterest,
   SfIconTwitter,
+  SfIconPinterest,
   SfIconYoutube,
-  SfButton,
-  SfLink,
-  SfListItem,
+  SfButton
 } from '@storefront-ui/vue';
 
-const categories = [
-  {
-    label: 'How to buy',
-    subcategories: [
-      {
-        subcategoryLabel: 'Payment methods',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Order pickup',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Purchase status',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Track orders',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Returns',
-        link: '#',
-      },
-    ],
-  },
-  {
-    label: 'Help',
-    subcategories: [
-      {
-        subcategoryLabel: 'Help centers',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Security & fraud',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Feedback',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Contact',
-        link: '#',
-      },
-    ],
-  },
-  {
-    label: 'Services',
-    subcategories: [
-      {
-        subcategoryLabel: 'Gift cards',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Order pickup',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Purchase status',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Track orders',
-        link: '#',
-      },
-    ],
-  },
-  {
-    label: 'About',
-    subcategories: [
-      {
-        subcategoryLabel: 'About us',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Order pickup',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Purchase status',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Track orders',
-        link: '#',
-      },
-      {
-        subcategoryLabel: 'Returns',
-        link: '#',
-      },
-    ],
-  },
-];
 const socialMedia = [
   {
     label: 'Facebook',
@@ -206,34 +81,8 @@ const socialMedia = [
     icon: SfIconYoutube,
   },
 ];
-const contactOptions = [
-  {
-    label: 'Help center',
-    link: '#',
-    details: ['Find answers online anytime'],
-    icon: SfIconHelp,
-  },
-  {
-    label: 'Live chat',
-    link: '#',
-    details: ['Mon–Fri, 5am–10pm PT', 'Sat–Sun, 6am–9pm PT'],
-    icon: SfIconContactSupport,
-  },
-  {
-    label: '1 234 567 8901',
-    link: '#',
-    details: ['Mon–Fri, 5am–10pm PT', 'Sat–Sun, 6am–9pm PT'],
-    icon: SfIconCall,
-  },
-];
-const bottomLinks = [
-  {
-    label: 'Terms',
-    link: '#',
-  },
-  {
-    label: 'Privacy policy',
-    link: '#',
-  },
-];
 </script>
+
+<style scoped>
+/* Add any additional styles here */
+</style>
