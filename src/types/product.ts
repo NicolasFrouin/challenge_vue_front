@@ -1,5 +1,6 @@
-export type Product = {
-  id: number;
+import type { Base } from './base';
+
+export interface Product extends Base {
   slug: string;
   name: string;
   description: string;
@@ -7,7 +8,7 @@ export type Product = {
   image: string;
   stockReal: number;
   stockVirtual: number;
-};
+}
 
 export enum LineOf {
   TWO = 2,

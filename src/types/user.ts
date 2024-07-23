@@ -1,5 +1,8 @@
 export type User = {
   id: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
   name?: string;
   email?: string;
   role: Role;

@@ -64,33 +64,55 @@ export const routes = {
         path: '',
         name: 'admin-home',
         component: () => import('../views/admin/AdminDashboard.vue'),
-        meta: { title: 'Admin Dashboard' },
+        meta: { title: 'Admin Dashboard', requiresAuth: Role.Accountant },
       },
       {
         path: 'products',
         name: 'admin-products',
-        component: () => import('../views/admin/products/AdminProducts.vue'),
-        meta: { title: 'Admin Products' },
         children: [
           {
-            path: 'new',
-            name: 'admin-new-product',
-            component: () => import('../views/admin/products/AdminNewProduct.vue'),
-            meta: { title: 'New Product' },
+            path: '',
+            name: 'admin-products-list',
+            component: () => import('../views/admin/products/AdminProducts.vue'),
+            meta: { title: 'Products List', requiresAuth: Role.Accountant },
           },
           {
-            path: ':slug',
-            name: 'admin-edit-product',
+            path: 'new',
+            name: 'admin-product-new',
+            component: () => import('../views/admin/products/AdminNewProduct.vue'),
+            meta: { title: 'New Product', requiresAuth: Role.Accountant },
+          },
+          {
+            path: ':id',
+            name: 'admin-products-edit',
             component: () => import('../views/admin/products/AdminEditProduct.vue'),
-            meta: { title: 'Edit Product' },
+            meta: { title: 'Edit Product', requiresAuth: Role.Accountant },
           },
         ],
       },
       {
         path: 'users',
         name: 'admin-users',
-        component: () => import('../views/admin/users/AdminUsers.vue'),
-        meta: { title: 'Admin Users', requiresAuth: Role.Admin },
+        children: [
+          {
+            path: '',
+            name: 'admin-users-list',
+            component: () => import('../views/admin/users/AdminUsers.vue'),
+            meta: { title: 'Users List', requiresAuth: Role.Accountant },
+          },
+          {
+            path: 'new',
+            name: 'admin-user-new',
+            component: () => import('../views/admin/users/AdminNewUser.vue'),
+            meta: { title: 'New User', requiresAuth: Role.Accountant },
+          },
+          {
+            path: ':id',
+            name: 'admin-users-edit',
+            component: () => import('../views/admin/users/AdminEditUser.vue'),
+            meta: { title: 'Edit User', requiresAuth: Role.Accountant },
+          },
+        ],
       },
     ],
   },
@@ -130,6 +152,8 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to) => {
+  console.log(to);
+
   document.title = `${to.meta.title ? `${to.meta.title} — ` : ''}${company.name}`;
 });
 

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { usePagination, usePrompt } from '@/utils';
+import { apiRoutes, usePagination, usePrompt, useRefStore, useRequest } from '@/utils';
 import { useRouter } from 'vue-router';
+import useAuthStore from '@/stores/auth';
 import TablePagination from './TablePagination.vue';
 import { AppPrompt } from '../interaction';
 
@@ -19,21 +20,50 @@ export interface TableOrder {
   [key: string]: 'asc' | 'desc';
 }
 
+const emit = defineEmits(['refresh']);
+
+const { token } = useRefStore(useAuthStore());
 const router = useRouter();
+const ressource = router.currentRoute.value.path.split('/').filter(Boolean).pop();
 const { shown, open, close } = usePrompt();
 
+const modalData = ref<any>(null);
+
 async function deleteItem(id: string) {
-  console.log('Delete', id, router.currentRoute.value.path.split('/').filter(Boolean).pop());
+  const { sendRequest } = useRequest(
+    {
+      // @ts-ignore
+      url: apiRoutes[ressource].delete(id),
+      method: 'DELETE',
+      // @ts-expect-error
+      headers: { Authorization: `Bearer ${token.value}` },
+    },
+    false,
+  );
+  sendRequest().then(() => {
+    console.log('Delete', id, ressource, modalData, router.currentRoute.value.path.split('/').filter(Boolean).pop());
+    emit('refresh');
+  });
 }
 
 function handleConfirm() {
-  console.log('Confirmed');
+  deleteItem(modalData.value.id);
   close();
 }
 
 const defaultActions = {
-  edit: { label: 'Edit', handler: (row) => router.push(`/admin/products/${row.slug}`) },
-  delete: { label: 'Delete', handler: open },
+  edit: {
+    label: 'Edit',
+    handler: (row) =>
+      router.push(
+        router.resolve({
+          // @ts-expect-error
+          name: `${String(router.currentRoute.value.matched.at(-2).name)}-edit`,
+          params: { id: row.id },
+        }),
+      ),
+  },
+  delete: { label: 'Delete', handler: (row) => (modalData.value = row) && open() },
 } as const satisfies Record<string, Action>;
 
 const props = defineProps<{
@@ -70,6 +100,13 @@ const displayData = computed(() => {
 });
 
 const pagination = computed(() => usePagination({ totalItems: displayData.value.length, pageSize: 10 }));
+
+function printValue(value: any) {
+  if (!value) return '';
+  if (!Number.isNaN(Number(value))) return value;
+  if (new Date(value).toString() !== 'Invalid Date') return new Date(value).toLocaleString();
+  return value;
+}
 </script>
 
 <template>
@@ -101,7 +138,7 @@ const pagination = computed(() => usePagination({ totalItems: displayData.value.
             :key="column.key"
             class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs truncate"
           >
-            {{ row[column.key] }}
+            {{ printValue(row[column.key]) }}
           </td>
           <td v-if="displayActions">
             <button

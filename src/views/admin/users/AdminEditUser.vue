@@ -8,6 +8,6 @@ const id = router.currentRoute.value.params.id as string;
 
 <template>
   <div>
-    <EditRessource ressource="products" :id="id" />
+    <EditRessource ressource="users" :id="id" :filter-fields="(key: string) => key !== 'fullname'" />
   </div>
 </template>

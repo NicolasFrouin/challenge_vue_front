@@ -19,7 +19,8 @@ const { token, jwtLogin, hasRights } = useRefStore(useAuthStore());
 const { resData, sendRequest, isLoading, error, abort } = useRequest<Product[]>(
   {
     url: apiRoutes.products.all,
-    headers: { Authorization: `Bearer ${token}` },
+    /* @ts-expect-error */
+    headers: { Authorization: `Bearer ${token.value}` },
   },
   false,
 );
@@ -28,10 +29,18 @@ function colFilter(col: TableColumn) {
   return !/[A-Z]/.test(col.key) && col.key.indexOf('_') === -1;
 }
 
-onMounted(() => {
+async function fetchData() {
   jwtLogin().then((res) =>
     res && hasRights(Role.Accountant) ? sendRequest() : router.push({ name: routes.login.name }),
   );
+}
+
+function refresh() {
+  fetchData();
+}
+
+onMounted(() => {
+  fetchData();
 });
 
 onUnmounted(() => {
@@ -43,6 +52,13 @@ onUnmounted(() => {
   <AppLoading v-if="isLoading" />
   <div v-else>
     <div v-if="error" class="text-red-500 p-2">{{ error }}</div>
-    <AppTable v-if="resData" columns="all" :data="resData" :columns-filter="colFilter" :actions="['edit', 'delete']" />
+    <AppTable
+      v-if="resData"
+      columns="all"
+      :data="resData"
+      :columns-filter="colFilter"
+      :actions="['edit', 'delete']"
+      @refresh="refresh"
+    />
   </div>
 </template>
