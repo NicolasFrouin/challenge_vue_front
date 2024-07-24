@@ -42,8 +42,6 @@ export const routes = {
     component: () => import('../views/ConfidentialiteView.vue'),
     meta: {
       title: 'Confidentialite',
-      requiresAuth: true,
-      requiresAdmin: true,
     },
   },
   about: {
