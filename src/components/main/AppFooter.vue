@@ -14,11 +14,8 @@
 
       <!-- Center Section -->
       <div class="flex space-x-8">
-        <a href="#" class="hover:underline">About</a>
-        <a href="#" class="hover:underline">Growers</a>
-        <a href="#" class="hover:underline">Merchants</a>
-        <a href="#" class="hover:underline">Partners</a>
-        <a href="#" class="hover:underline">Contact</a>
+        <a href="/cgv" class="hover:underline">Conditions Générales de Vente</a>
+        <a href="/cgu" class="hover:underline">Conditions Générales d'Utilisation (CGU)</a>
         <a href="/confidentialite" class="hover:underline">Politique de confidentialité</a>
       </div>
 
@@ -49,8 +46,6 @@ import {
   SfIconFacebook,
   SfIconInstagram,
   SfIconTwitter,
-  SfIconPinterest,
-  SfIconYoutube,
   SfButton
 } from '@storefront-ui/vue';
 
@@ -69,16 +64,6 @@ const socialMedia = [
     label: 'Instagram',
     link: '#',
     icon: SfIconInstagram,
-  },
-  {
-    label: 'Pinterest',
-    link: '#',
-    icon: SfIconPinterest,
-  },
-  {
-    label: 'Youtube',
-    link: '#',
-    icon: SfIconYoutube,
   },
 ];
 </script>
