@@ -16,7 +16,7 @@ export const routes = {
     path: '/search',
     name: 'search',
     component: () => import('../views/SearchView.vue'),
-    meta: { title: 'Search Results' },
+    meta: { title: 'Résultat de la recherche' },
   },
   productDetails: {
     path: '/product/:slug',
@@ -36,10 +36,26 @@ export const routes = {
     component: () => import('../views/RegisterView.vue'),
     meta: { title: 'Register' },
   },
-  Confidential: {
+  confidential: {
     path: '/confidentialite',
-    name: 'confidentialite',
+    name: 'Politique de confidentialité',
     component: () => import('../views/ConfidentialiteView.vue'),
+    meta: {
+      title: 'Confidentialite',
+    },
+  },
+  cgu: {
+    path: '/cgu',
+    name: 'Condition générale d\'utilisation',
+    component: () => import('../views/CGUview.vue'),
+    meta: {
+      title: 'Confidentialite',
+    },
+  },
+  cgv: {
+    path: '/cgv',
+    name: 'Condition générale de vente',
+    component: () => import('../views/CGVview.vue'),
     meta: {
       title: 'Confidentialite',
     },
