@@ -46,11 +46,11 @@ onUnmounted(() => {
 
 <template>
   <h1>
-    Search results for :
+    Résultat des recherches pour :
     <span class="italic">{{ q }}</span>
   </h1>
   <div class="md:flex md:flex-row">
-    <SfButton v-if="isMobile" class="md:hidden" @click="open"> Open search </SfButton>
+    <SfButton v-if="isMobile" class="md:hidden" @click="open"> Barre de recherche </SfButton>
     <SearchSidepanel v-else class="flex-[1]" />
     <ProductList :products="products" :line-of="LineOf.THREE" class="flex-[3]" />
   </div>
