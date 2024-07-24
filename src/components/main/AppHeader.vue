@@ -153,8 +153,8 @@ const actionItems = computed(() => [
   },
   {
     icon: SfIconPerson,
-    label: isLoggedIn() ? 'My account' : 'Log in',
-    ariaLabel: isLoggedIn() ? 'My account' : 'Log in',
+    label: isLoggedIn() ? 'Mon Compte' : 'Se connecter',
+    ariaLabel: isLoggedIn() ? 'Mon Compte' : 'Se connecter',
     role: 'login',
     onClick: () =>
       router.push({
@@ -224,7 +224,7 @@ onMounted(async () => {
             v-model="inputValue"
             type="search"
             class="[&::-webkit-search-cancel-button]:appearance-none text-slate-800"
-            placeholder="Search"
+            placeholder="Rechercher"
             wrapper-class="flex-1 h-10 pr-0"
             size="base"
           >
@@ -271,7 +271,7 @@ onMounted(async () => {
             v-model="inputValue"
             type="search"
             class="[&::-webkit-search-cancel-button]:appearance-none"
-            placeholder="Search"
+            placeholder="Rechercher"
             wrapper-class="flex-1 h-10 pr-0"
             size="base"
           >
