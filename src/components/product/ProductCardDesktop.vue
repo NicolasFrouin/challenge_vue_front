@@ -49,7 +49,7 @@ const { addProduct } = useRefStore(useCartStore());
             <template #prefix>
               <SfIconShoppingCart size="sm" />
             </template>
-            <span> Add to cart </span>
+            <span> Ajouter un produit </span>
           </SfButton>
         </SfTooltip>
       </div>
