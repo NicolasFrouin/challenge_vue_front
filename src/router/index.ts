@@ -158,8 +158,6 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to) => {
-  console.log(to);
-
   document.title = `${to.meta.title ? `${to.meta.title} — ` : ''}${company.name}`;
 });
 

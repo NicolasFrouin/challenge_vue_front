@@ -41,7 +41,6 @@ async function deleteItem(id: string) {
     false,
   );
   sendRequest().then(() => {
-    console.log('Delete', id, ressource, modalData, router.currentRoute.value.path.split('/').filter(Boolean).pop());
     emit('refresh');
   });
 }
