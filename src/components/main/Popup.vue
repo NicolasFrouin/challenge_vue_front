@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { setCookie, getCookie } from '@/utils/cookie';
 
 const showPopup = ref(!getCookie('cookieConsent'));
-const cooldown = 1;
+const cooldown = 1440; //1 jour en minute
 
 const acceptCookies = () => {
   setCookie('cookieConsent', 'accepted', cooldown);
