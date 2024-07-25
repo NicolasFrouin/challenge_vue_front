@@ -96,30 +96,30 @@ function handleOnChange(event: Event) {
             <template #prefix>
               <SfIconShoppingCart size="sm" />
             </template>
-            Add to cart
+            Ajouter au panier
           </SfButton>
         </div>
       </div>
       <div class="flex first:mt-4">
         <SfIconPackage size="sm" class="flex-shrink-0 mr-1 text-neutral-500" />
         <p class="text-sm">
-          Free shipping, arrives by Thu, Apr 7. Want it faster?
-          <SfLink href="#" variant="secondary" class="mx-1"> Add an address </SfLink>
-          to see options
+          Livraison gratuite, arrivée en une semaine.
+          <SfLink href="#" variant="secondary" class="mx-1"> Ajouter une adresse </SfLink>
+          Voir les options
         </p>
       </div>
       <div class="flex mt-4">
         <SfIconWarehouse size="sm" class="flex-shrink-0 mr-1 text-neutral-500" />
         <p class="text-sm">
-          Pickup not available at your shop.
-          <SfLink href="#" variant="secondary" class="ml-1"> Check availability nearby </SfLink>
+          Le ramassage n'est pas possible dans votre magasin.
+          <SfLink href="#" variant="secondary" class="ml-1"> Vérifier la disponibilité à proximité </SfLink>
         </p>
       </div>
       <div class="flex mt-4">
         <SfIconSafetyCheck size="sm" class="flex-shrink-0 mr-1 text-neutral-500" />
         <p class="text-sm">
-          Free 30-days returns.
-          <SfLink href="#" variant="secondary" class="ml-1"> Details </SfLink>
+          Retour gratuit sous 30 jours.
+          <SfLink href="#" variant="secondary" class="ml-1"> Détail </SfLink>
         </p>
       </div>
     </div>

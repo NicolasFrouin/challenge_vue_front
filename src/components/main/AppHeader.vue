@@ -1,3 +1,4 @@
+<!-- eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars -->
 <script lang="ts" setup>
 import {
   SfIconShoppingCart,
@@ -146,15 +147,15 @@ const search = () => {
 const actionItems = computed(() => [
   {
     icon: SfIconShoppingCart,
-    ariaLabel: 'Cart',
-    hint: 'Cart',
+    ariaLabel: 'Panier',
+    hint: 'Panier',
     role: 'button',
     onClick: () => router.push({ name: routes.cart.name }),
   },
   {
     icon: SfIconPerson,
-    label: isLoggedIn() ? 'My account' : 'Log in',
-    ariaLabel: isLoggedIn() ? 'My account' : 'Log in',
+    label: isLoggedIn() ? 'Mon Compte' : 'Se connecter',
+    ariaLabel: isLoggedIn() ? 'Mon Compte' : 'Se connecter',
     role: 'login',
     onClick: () =>
       router.push({
@@ -165,8 +166,8 @@ const actionItems = computed(() => [
   isLoggedIn()
     ? {
         icon: SfIconLogout,
-        ariaLabel: 'Logout',
-        hint: 'Logout',
+        ariaLabel: 'Déconnexion',
+        hint: 'Déconnexion',
         role: 'logout',
         onClick: () => logout(),
       }
@@ -224,7 +225,7 @@ onMounted(async () => {
             v-model="inputValue"
             type="search"
             class="[&::-webkit-search-cancel-button]:appearance-none text-slate-800"
-            placeholder="Search"
+            placeholder="Rechercher"
             wrapper-class="flex-1 h-10 pr-0"
             size="base"
           >
@@ -257,7 +258,7 @@ onMounted(async () => {
               >
                 <template #prefix>
                   <Component :is="actionItem.icon" />
-                  <SfBadge v-if="actionItem.ariaLabel === 'Cart' && totalProducts" :content="totalProducts" />
+                  <SfBadge v-if="actionItem.ariaLabel === 'Panier' && totalProducts" :content="totalProducts" />
                 </template>
                 <p v-if="actionItem.label" class="hidden lg:inline-flex whitespace-nowrap mr-2">
                   {{ actionItem.label }}
@@ -271,7 +272,7 @@ onMounted(async () => {
             v-model="inputValue"
             type="search"
             class="[&::-webkit-search-cancel-button]:appearance-none"
-            placeholder="Search"
+            placeholder="Rechercher"
             wrapper-class="flex-1 h-10 pr-0"
             size="base"
           >
@@ -292,7 +293,7 @@ onMounted(async () => {
         </form>
       </div>
       <!-- Desktop dropdown -->
-      <nav ref="floatingRef">
+      <!-- <nav ref="floatingRef">
         <ul
           class="hidden md:flex px-6 py-2 bg-white border-b border-b-neutral-200 border-b-solid justify-center"
           @blur="
@@ -362,10 +363,10 @@ onMounted(async () => {
             </div>
           </li>
         </ul>
-      </nav>
+      </nav> -->
 
       <!-- Mobile drawer -->
-      <div v-if="isOpen" class="md:hidden fixed inset-0 bg-neutral-500 bg-opacity-50"></div>
+      <!-- <div v-if="isOpen" class="md:hidden fixed inset-0 bg-neutral-500 bg-opacity-50"></div>
       <transition
         enter-active-class="transition duration-500 ease-in-out"
         leave-active-class="transition duration-500 ease-in-out"
@@ -437,7 +438,7 @@ onMounted(async () => {
             </div>
           </nav>
         </SfDrawer>
-      </transition>
+      </transition> -->
     </header>
   </div>
 </template>

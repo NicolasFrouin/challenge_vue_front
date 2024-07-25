@@ -15,6 +15,7 @@ type CartStore = {
   addProduct: (product: Product, quantity?: number) => void;
   setQuantity: (product: Product, quantity: number) => void;
   removeProduct: (product: Product) => void;
+  clearCart: () => void;
 };
 
 const useCartStore = defineStore('cart', (): CartStore => {
@@ -54,10 +55,15 @@ const useCartStore = defineStore('cart', (): CartStore => {
     saveCart();
   }
 
+  function clearCart() {
+    cart.splice(0, cart.length);
+    saveCart();
+  }
+
   const totalPrice = computed(() => cart.reduce((acc, item) => acc + item.product.price, 0));
   const totalProducts = computed(() => cart.reduce((acc, item) => acc + item.quantity, 0));
 
-  return { cart, totalPrice, totalProducts, addProduct, setQuantity, removeProduct };
+  return { cart, totalPrice, totalProducts, addProduct, setQuantity, removeProduct, clearCart };
 });
 
 export default useCartStore;

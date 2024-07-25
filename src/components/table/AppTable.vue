@@ -123,7 +123,12 @@ function printValue(value: any) {
             {{ column.label }}
             <span v-if="order && order[column.key]" class="ml-2">{{ order[column.key] === 'asc' ? '▲' : '▼' }}</span>
           </th>
-          <th v-if="actions">Actions</th>
+          <th
+            v-if="actions"
+            class="px-6 py-3 text-left text-md font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary-500"
+          >
+            Actions
+          </th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-200">
@@ -140,15 +145,17 @@ function printValue(value: any) {
             {{ printValue(row[column.key]) }}
           </td>
           <td v-if="displayActions">
-            <button
-              v-for="action in displayActions"
-              :key="action.label"
-              @click="action.handler(row)"
-              type="button"
-              class="px-4 py-2 text-sm font-medium text-white bg-primary-500 hover:bg-primary-600 rounded-md m-1"
-            >
-              {{ action.label }}
-            </button>
+            <div class="flex justify-center">
+              <button
+                v-for="action in displayActions"
+                :key="action.label"
+                @click="action.handler(row)"
+                type="button"
+                class="px-4 py-2 text-sm font-medium text-white bg-primary-500 hover:bg-primary-600 rounded-md m-1"
+              >
+                {{ action.label }}
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>

@@ -26,7 +26,6 @@ const { resData, isLoading } = useRequest<any>({
       <div class="bg-white rounded-lg shadow-md p-4">
         <h2 class="text-lg font-semibold mb-2">Détails</h2>
         <p><span class="font-semibold">ID de commande :</span> {{ resData._id }}</p>
-        <p><span class="font-semibold">ID utilisateur :</span> {{ resData.userId }}</p>
         <p><span class="font-semibold">Statut :</span> {{ resData.status }}</p>
         <p><span class="font-semibold">Créée le :</span> {{ new Date(resData.createdAt).toLocaleString() }}</p>
       </div>

@@ -3,23 +3,24 @@
     <div class="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
       <!-- Left Section -->
       <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
-        <img src="@/components/img/only_cans.jpg" alt="OnlyCans Logo" class="w-24 h-24">
+        <img src="@/components/img/only_cans.jpg" alt="OnlyCans Logo" class="w-24 h-24" />
         <div>
           <p>27 Rue Jean Moulin, Paris</p>
           <p>75014</p>
-          <p>01.86.57.45.25</p>
-          <p><a href="mailto:contact.onlycans@gmail.com" class="underline">contact.onlycans@gmail.com</a></p>
+          <p>
+            <a href="tel:+186574525">01 86 57 45 25</a>
+          </p>
+          <p>
+            <a href="mailto:contact.onlycans@gmail.com" class="underline">contact.onlycans@gmail.com</a>
+          </p>
         </div>
       </div>
 
       <!-- Center Section -->
       <div class="flex space-x-8">
-        <a href="#" class="hover:underline">About</a>
-        <a href="#" class="hover:underline">Growers</a>
-        <a href="#" class="hover:underline">Merchants</a>
-        <a href="#" class="hover:underline">Partners</a>
-        <a href="#" class="hover:underline">Contact</a>
-        <a href="/confidentialite" class="hover:underline">Politique de confidentialité</a>
+        <RouterLink to="/cgv" class="hover:underline">Conditions Générales de Vente</RouterLink>
+        <RouterLink to="/cgu" class="hover:underline">Conditions Générales d'Utilisation (CGU)</RouterLink>
+        <RouterLink to="/confidentialite" class="hover:underline">Politique de confidentialité</RouterLink>
       </div>
 
       <!-- Right Section -->
@@ -39,20 +40,14 @@
       </div>
     </div>
     <div class="container mx-auto text-center mt-8">
-      <p>&copy; 2024 OnlyCans. Tout droit réservées.</p>
+      <p>&copy; 2024 OnlyCans. Tous droits réservés.</p>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
-import {
-  SfIconFacebook,
-  SfIconInstagram,
-  SfIconTwitter,
-  SfIconPinterest,
-  SfIconYoutube,
-  SfButton
-} from '@storefront-ui/vue';
+import { SfIconFacebook, SfIconInstagram, SfIconTwitter, SfButton } from '@storefront-ui/vue';
+import { RouterLink } from 'vue-router';
 
 const socialMedia = [
   {
@@ -70,21 +65,11 @@ const socialMedia = [
     link: '#',
     icon: SfIconInstagram,
   },
-  {
-    label: 'Pinterest',
-    link: '#',
-    icon: SfIconPinterest,
-  },
-  {
-    label: 'Youtube',
-    link: '#',
-    icon: SfIconYoutube,
-  },
 ];
 </script>
 
 <style scoped>
-.colorbackground{
-  background-color: #253131  ;
+.colorbackground {
+  background-color: #253131;
 }
 </style>

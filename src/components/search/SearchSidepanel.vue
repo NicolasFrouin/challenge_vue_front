@@ -43,92 +43,30 @@ type Node = {
 };
 
 const filtersData = reactive<Node[]>([
-  // {
-  //   id: 'acc1',
-  //   summary: 'Size',
-  //   type: 'size',
-  //   details: [
-  //     { id: 's1', label: '6', value: '6' },
-  //     { id: 's2', label: '6.5', value: '6.5' },
-  //     { id: 's3', label: '7', value: '7.5' },
-  //     { id: 's4', label: '8', value: '8' },
-  //     { id: 's5', label: '8.5', value: '8.5' },
-  //     { id: 's6', label: '9', value: '9' },
-  //     { id: 's7', label: '9.5', value: '9.5' },
-  //     { id: 's8', label: '10', value: '10' },
-  //     { id: 's9', label: '10.5', value: '10.5' },
-  //     { id: 's10', label: '11', value: '11' },
-  //     { id: 's11', label: '11.5', value: '11.5' },
-  //     { id: 's12', label: '12', value: '12' },
-  //   ],
-  // },
   {
     id: 'acc2',
-    summary: 'Category',
+    summary: 'Catégorie',
     type: 'category',
     details: [],
   },
-  // {
-  //   id: 'acc3',
-  //   summary: 'Color',
-  //   type: 'color',
-  //   details: [
-  //     {
-  //       id: 'c1',
-  //       label: 'Primary',
-  //       value: 'bg-primary-500',
-  //       counter: 10,
-  //     },
-  //     {
-  //       id: 'c2',
-  //       label: 'Black and gray',
-  //       value: 'bg-[linear-gradient(-45deg,#000_50%,#d1d5db_50%)]',
-  //       counter: 5,
-  //     },
-  //     {
-  //       id: 'c3',
-  //       label: 'Violet',
-  //       value: 'bg-violet-500',
-  //       counter: 0,
-  //     },
-  //     {
-  //       id: 'c4',
-  //       label: 'Red',
-  //       value: 'bg-red-500',
-  //       counter: 2,
-  //     },
-  //     {
-  //       id: 'c5',
-  //       label: 'Yellow',
-  //       value: 'bg-yellow-500',
-  //       counter: 100,
-  //     },
-  //     {
-  //       id: 'c6',
-  //       label: 'Avocado',
-  //       value: 'bg-gradient-to-tr from-yellow-300 to-primary-500',
-  //       counter: 14,
-  //     },
-  //   ],
-  // },
   {
     id: 'acc5',
-    summary: 'Price',
+    summary: 'Prix',
     type: 'radio',
     details: [
-      { id: 'pr1', label: 'Under $24.99', value: 'under' },
-      { id: 'pr2', label: '$25.00 - $49.99', value: '25-49' },
-      { id: 'pr3', label: '$50.00 - $99.99', value: '50-99' },
-      { id: 'pr4', label: '$100.00 - $199.99', value: '100-199' },
-      { id: 'pr5', label: '$200.00 and above', value: 'above' },
+      { id: 'pr1', label: 'Moins de 25€', value: '0-25' },
+      { id: 'pr2', label: '25€ - 50€', value: '25-50' },
+      { id: 'pr3', label: '50€ - 100€', value: '50-100' },
+      { id: 'pr4', label: '100€ - 200€', value: '100-200' },
+      { id: 'pr5', label: '200€ et plus', value: '200-99999' },
     ],
   },
 ]);
 const sortOptions = ref([
-  { id: 'sort1', label: 'Relevance', value: 'relevance' },
-  { id: 'sort2', label: 'Price: Low to High', value: 'lth' },
-  { id: 'sort3', label: 'Price: High to Low', value: 'htl' },
-  { id: 'sort4', label: 'New Arrivals', value: 'new' },
+  { id: 'sort1', label: 'Pertinence', value: 'relevance' },
+  { id: 'sort2', label: 'Prix : Ascendant', value: 'lth' },
+  { id: 'sort3', label: 'Prix : Déscendant', value: 'htl' },
+  { id: 'sort4', label: 'Nouveaux produits', value: 'new' },
 ]);
 
 // eslint-disable-next-line no-nested-ternary
@@ -166,25 +104,29 @@ onMounted(() => {
 <template>
   <aside class="w-full md:max-w-[25%]">
     <div class="flex justify-between mb-4">
-      <h4 class="px-2 font-bold typography-headline-4">List settings</h4>
-      <button type="button" class="sm:hidden text-red-500" aria-label="Close filters panel" @click="$emit('close')">
+      <button
+        type="button"
+        class="sm:hidden text-red-500"
+        aria-label="Fermer le panneau de filtres"
+        @click="$emit('close')"
+      >
         <SfIconClose />
       </button>
     </div>
     <h5
       class="py-2 px-4 mb-6 bg-neutral-100 typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest md:rounded-md"
     >
-      Sort by
+      Trier par
     </h5>
     <div class="px-2">
-      <SfSelect v-model="sortModel" aria-label="Sort by">
+      <SfSelect v-model="sortModel" aria-label="Trier par">
         <option v-for="{ id, label, value } in sortOptions" :key="id" :value="value">{{ label }}</option>
       </SfSelect>
     </div>
     <h5
       class="py-2 px-4 mt-6 mb-4 bg-neutral-100 typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest md:rounded-md"
     >
-      Filter
+      Filtre
     </h5>
     <ul>
       <li v-for="({ id: filterDataId, type, summary, details }, index) in filtersData" :key="filterDataId">
@@ -340,9 +282,11 @@ onMounted(() => {
       </li>
     </ul>
     <div class="flex justify-between">
-      <SfButton variant="secondary" class="w-full mr-3" @click="handleClearFilters()"> Clear all filters </SfButton>
+      <SfButton variant="secondary" class="w-full mr-3" @click="handleClearFilters()">
+        Supprimer tout les filtres
+      </SfButton>
       <RouterLink
-        class="inline-flex items-center justify-center font-medium text-base focus-visible:outline focus-visible:outline-offset rounded-md disabled:text-disabled-500 disabled:shadow-none disabled:ring-0 disabled:cursor-not-allowed py-2 leading-6 px-4 gap-2 text-primary-700 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900 ring-1 ring-inset ring-primary-700 shadow hover:shadow-md active:shadow hover:ring-primary-800 active:ring-primary-900disabled:ring-disabled-300 disabled:bg-white/50 w-full mr-3"
+        class="inline-flex text-center items-center justify-center font-medium text-base focus-visible:outline focus-visible:outline-offset rounded-md disabled:text-disabled-500 disabled:shadow-none disabled:ring-0 disabled:cursor-not-allowed py-2 leading-6 px-4 gap-2 text-primary-700 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900 ring-1 ring-inset ring-primary-700 shadow hover:shadow-md active:shadow hover:ring-primary-800 active:ring-primary-900disabled:ring-disabled-300 disabled:bg-white/50 w-full mr-3"
         :to="
           $router.resolve({
             name: routes.search.name,
@@ -355,7 +299,7 @@ onMounted(() => {
           }).fullPath
         "
       >
-        Show products
+        Rechercher avec les filtres
       </RouterLink>
     </div>
   </aside>

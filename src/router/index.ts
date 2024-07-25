@@ -36,12 +36,28 @@ export const routes = {
     component: () => import('../views/RegisterView.vue'),
     meta: { title: 'Créer un compte' },
   },
-  Confidential: {
+  confidential: {
     path: '/confidentialite',
     name: 'confidentialite',
     component: () => import('../views/ConfidentialiteView.vue'),
     meta: {
-      title: 'Confidentialite',
+      title: 'Politique de confidentialité',
+    },
+  },
+  cgu: {
+    path: '/cgu',
+    name: 'cgu',
+    component: () => import('../views/CGUview.vue'),
+    meta: {
+      title: "Condition générale d'utilisation",
+    },
+  },
+  cgv: {
+    path: '/cgv',
+    name: 'cgv',
+    component: () => import('../views/CGVview.vue'),
+    meta: {
+      title: 'Condition générale de vente',
     },
   },
   about: {
@@ -68,6 +84,45 @@ export const routes = {
     component: () => import('../views/user/CheckoutView.vue'),
     meta: { title: 'Paiement', requiresAuth: Role.User },
   },
+  afterCheckout: {
+    path: '/checkout/success',
+    name: 'after-checkout',
+    component: () => import('../views/user/AfterCheckoutView.vue'),
+    meta: { title: 'Commande validée', requiresAuth: Role.User },
+  },
+  user: {
+    path: '/account',
+    name: 'user',
+    component: () => import('../views/user/AccountView.vue'),
+    meta: { title: 'Mon compte', requiresAuth: Role.User },
+    children: [
+      {
+        path: '',
+        name: 'user-home',
+        component: () => import('../views/user/UserDashboard.vue'),
+        meta: { title: 'Accueil utilisateur', requiresAuth: Role.User },
+      },
+      {
+        path: 'orders',
+        name: 'user-orders',
+        meta: { title: 'Mes commandes', requiresAuth: Role.User },
+        children: [
+          {
+            path: '',
+            name: 'user-orders-list',
+            component: () => import('../views/user/orders/UserOrders.vue'),
+            meta: { title: 'Liste de commandes', requiresAuth: Role.User },
+          },
+          {
+            path: 'view',
+            name: 'user-orders-view',
+            component: () => import('../views/user/orders/UserViewOrder.vue'),
+            meta: { title: 'Détails de commande', requiresAuth: Role.User },
+          },
+        ],
+      },
+    ],
+  },
   admin: {
     path: '/admin',
     name: 'admin',
@@ -83,6 +138,7 @@ export const routes = {
       {
         path: 'products',
         name: 'admin-products',
+        meta: { title: 'Produits', requiresAuth: Role.Accountant },
         children: [
           {
             path: '',
@@ -107,6 +163,7 @@ export const routes = {
       {
         path: 'users',
         name: 'admin-users',
+        meta: { title: 'Utilisateurs', requiresAuth: Role.Admin },
         children: [
           {
             path: '',
@@ -131,6 +188,7 @@ export const routes = {
       {
         path: 'categories',
         name: 'admin-categories',
+        meta: { title: 'Catégories', requiresAuth: Role.Accountant },
         children: [
           {
             path: '',
@@ -155,18 +213,19 @@ export const routes = {
       {
         path: 'orders',
         name: 'admin-orders',
+        meta: { title: 'Commandes', requiresAuth: Role.Accountant },
         children: [
           {
             path: '',
             name: 'admin-orders-list',
             component: () => import('../views/admin/orders/AdminOrders.vue'),
-            meta: { title: 'Liste de catégories', requiresAuth: Role.Accountant },
+            meta: { title: 'Liste de commandes', requiresAuth: Role.Accountant },
           },
           {
-            path: 'new',
+            path: 'view',
             name: 'admin-orders-view',
             component: () => import('../views/admin/orders/AdminViewOrder.vue'),
-            meta: { title: 'Nouvelle catégorie', requiresAuth: Role.Accountant },
+            meta: { title: 'Détails de commande', requiresAuth: Role.Accountant },
           },
         ],
       },

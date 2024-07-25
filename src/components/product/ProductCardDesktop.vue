@@ -25,12 +25,6 @@ const { addProduct } = useRefStore(useCartStore());
         <span class="wwbw block no-underline overflow-ellipsis overflow-hidden text-base h-12">
           {{ product.name }}
         </span>
-        <!-- <div class="flex items-center pt-1">
-          <SfRating size="xs" :value="5" :max="5" />
-          <span class="pl-1 no-underline">
-            <SfCounter size="xs">123</SfCounter>
-          </span>
-        </div> -->
         <p
           class="wwbw block py-2 font-normal leading-5 text-sm text-neutral-700 overflow-ellipsis overflow-hidden h-[70px]"
         >
@@ -49,7 +43,7 @@ const { addProduct } = useRefStore(useCartStore());
             <template #prefix>
               <SfIconShoppingCart size="sm" />
             </template>
-            <span> Add to cart </span>
+            <span>Ajouter au panier</span>
           </SfButton>
         </SfTooltip>
       </div>

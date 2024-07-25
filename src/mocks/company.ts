@@ -1,9 +1,8 @@
 export const company = {
-  name: 'Vue Storefront',
-  address: '1234 Main St.',
-  city: 'San Francisco',
-  state: 'CA',
-  zip: '94111',
-  phone: '555-555-5555',
-  email: 'info@my-company.com',
+  name: 'Only Cans',
+  address: '27 Rue Jean Moulin',
+  city: 'Paris',
+  zip: '75014',
+  phone: '+33186574525',
+  email: 'contact.onlycans@gmail.com',
 };
