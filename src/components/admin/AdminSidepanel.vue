@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { routes } from '@/router';
 import useAuthStore from '@/stores/auth';
 import { Role } from '@/types/user';
 import { useRefStore } from '@/utils';
@@ -10,31 +11,31 @@ const router = useRouter();
 const adminNav = {
   dashboard: {
     key: 'admin-home',
-    link: router.resolve({ name: 'admin-home' }),
+    link: router.resolve({ name: routes.admin.children.find((r) => r.name === 'admin-home')?.name }).fullPath,
     name: 'Dashboard',
     roles: Role.Accountant,
   },
   users: {
     key: 'admin-users',
-    link: router.resolve({ name: 'admin-users' }),
+    link: router.resolve({ name: routes.admin.children.find((r) => r.name === 'admin-users')?.name }).fullPath,
     name: 'Utilisateurs',
     roles: Role.Admin,
   },
   products: {
     key: 'admin-products',
-    link: router.resolve({ name: 'admin-products' }),
+    link: router.resolve({ name: routes.admin.children.find((r) => r.name === 'admin-products')?.name }).fullPath,
     name: 'Produits',
     roles: Role.Accountant,
   },
   categories: {
     key: 'admin-categories',
-    link: router.resolve({ name: 'admin-categories' }),
+    link: router.resolve({ name: routes.admin.children.find((r) => r.name === 'admin-categories')?.name }).fullPath,
     name: 'Catégories',
     roles: Role.Accountant,
   },
   orders: {
     key: 'admin-orders',
-    link: router.resolve({ name: 'admin-orders' }),
+    link: router.resolve({ name: routes.admin.children.find((r) => r.name === 'admin-orders')?.name }).fullPath,
     name: 'Commandes',
     roles: Role.Accountant,
   },

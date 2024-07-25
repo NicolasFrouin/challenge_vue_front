@@ -53,7 +53,7 @@ onUnmounted(() => {
   <AppLoading v-if="isLoading" />
   <div v-else>
     <div v-if="error" class="text-red-500 p-2">{{ error }}</div>
-    <div v-if="resData">
+    <div v-if="resData?.length">
       <RouterLink
         :to="$router.resolve({ name: `admin-${ressource}-new` })"
         class="bg-primary-500 text-white p-2 rounded-md mb-2 inline-block"
@@ -68,5 +68,6 @@ onUnmounted(() => {
         @refresh="refresh"
       />
     </div>
+    <div v-else class="text-center p-2">Aucun produit trouvé</div>
   </div>
 </template>

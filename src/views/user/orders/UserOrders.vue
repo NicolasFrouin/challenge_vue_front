@@ -58,8 +58,9 @@ onUnmounted(() => {
   <AppLoading v-if="isLoading" />
   <div v-else>
     <div v-if="error" class="text-red-500 p-2">{{ error }}</div>
-    <div v-if="resData">
+    <div v-if="resData?.length">
       <AppTable columns="all" :data="resData" :actions="actions" :columns-filter="colFilter" @refresh="refresh" />
     </div>
+    <div v-else class="text-center p-2">Aucune commande trouvée</div>
   </div>
 </template>

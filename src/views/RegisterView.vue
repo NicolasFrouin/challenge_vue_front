@@ -13,12 +13,10 @@ const formData = reactive<{
   email: string;
   password: string;
   confirmPassword: string;
-  error: Error | null;
 }>({
   email: '',
   password: '',
   confirmPassword: '',
-  error: null,
 });
 
 const formErrors = reactive<{
@@ -31,7 +29,7 @@ const formErrors = reactive<{
   confirmPassword: null,
 });
 
-const { error, isLoading, resData, sendRequest } = useRequest<User>(
+const { isLoading, resData, sendRequest } = useRequest<User>(
   {
     url: apiRoutes.auth.register,
     method: 'POST',
@@ -56,9 +54,6 @@ async function handleSubmit() {
     return;
   }
   await sendRequest();
-  if (error.value) {
-    formData.error = error.value;
-  }
   if (resData.value) {
     router.push({ name: routes.login.name });
   }
