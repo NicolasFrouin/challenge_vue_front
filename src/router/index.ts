@@ -36,6 +36,14 @@ export const routes = {
     component: () => import('../views/RegisterView.vue'),
     meta: { title: 'Créer un compte' },
   },
+  Confidential: {
+    path: '/confidentialite',
+    name: 'confidentialite',
+    component: () => import('../views/ConfidentialiteView.vue'),
+    meta: {
+      title: 'Confidentialite',
+    },
+  },
   about: {
     path: '/about',
     name: 'about',

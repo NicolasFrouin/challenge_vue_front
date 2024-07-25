@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import { AppFooter, AppHeader, AppLoading } from '@/components/main';
+import PopupVue from '@/components/main/Popup.vue';
 import useAppState from './stores/state';
 import { useRefStore } from './utils/refStore';
 
@@ -12,6 +13,7 @@ const { loading } = useRefStore(useAppState());
   <main class="z-10 m-4 relative">
     <AppLoading v-if="loading" />
     <RouterView :key="$router.currentRoute.value.fullPath" />
+    <PopupVue />
   </main>
   <AppFooter class="z-30" />
 </template>
