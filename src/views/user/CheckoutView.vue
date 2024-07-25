@@ -10,7 +10,7 @@ const { cart } = useRefStore(useCartStore());
 
 const { resData, sendRequest } = useRequest(
   {
-    url: apiRoutes.order.new,
+    url: apiRoutes.orders.create,
     method: 'POST',
     // @ts-ignore
     headers: { Authorization: `Bearer ${token.value}` },

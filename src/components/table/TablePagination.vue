@@ -10,14 +10,14 @@ const pageSizeOptions = [5, 10, 20, 50, 100];
 <template>
   <div class="flex gap-4 items-center">
     <div>
-      <span class="text-md"> Page {{ activePage }} of {{ totalPages }} </span>
+      <span class="text-md"> Page {{ activePage }} sur {{ totalPages }} </span>
     </div>
     <div class="flex gap-1">
-      <button type="button" @click="prev" :disabled="activePage === 1" class="btn">Previous</button>
-      <button type="button" @click="next" :disabled="activePage === totalPages" class="btn">Next</button>
+      <button type="button" @click="prev" :disabled="activePage === 1">Précédent</button>
+      <button type="button" @click="next" :disabled="activePage === totalPages">Suivant</button>
     </div>
     <div>
-      <label for="pageSize" class="hidden">Page Size:</label>
+      <label for="pageSize" class="hidden">Éléments par page :</label>
       <select
         @change="setPageSize(Number(($event.target as HTMLSelectElement).value) || 10)"
         class="px-2 py-1 bg-gray-200 rounded"
@@ -32,11 +32,11 @@ const pageSizeOptions = [5, 10, 20, 50, 100];
 </template>
 
 <style scoped lang="postcss">
-.btn {
+button {
   @apply px-4 py-2 bg-gray-200 rounded cursor-pointer;
 }
 
-.btn:disabled {
+button:disabled {
   @apply opacity-50 cursor-not-allowed;
 }
 </style>

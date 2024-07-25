@@ -154,7 +154,7 @@ function printValue(value: any) {
       </tbody>
     </table>
     <AppPrompt title="Are you sure?" :show="shown" @cancel="close" @confirm="handleConfirm">
-      <p>Are you sure you want to delete this item?</p>
+      <p>Voulez-vous vraiment supprimer cet élément ?</p>
     </AppPrompt>
   </div>
 </template>

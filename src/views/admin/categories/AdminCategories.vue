@@ -5,7 +5,7 @@ import { AppTable } from '@/components/table';
 import type { TableColumn } from '@/components/table/AppTable.vue';
 import { routes } from '@/router';
 import useAuthStore from '@/stores/auth';
-import type { User } from '@/types';
+import type { Category } from '@/types/category';
 import { Role } from '@/types/user';
 import { useRequest } from '@/utils';
 import { apiRoutes } from '@/utils/apiRoutes';
@@ -15,11 +15,11 @@ import { RouterLink, useRouter } from 'vue-router';
 
 const router = useRouter();
 const { token, jwtLogin, hasRights } = useRefStore(useAuthStore());
-const ressource = 'users';
+const ressource = 'categories';
 
-const { resData, sendRequest, isLoading, error, abort } = useRequest<User[]>(
+const { resData, sendRequest, isLoading, error, abort } = useRequest<Category[]>(
   {
-    url: apiRoutes.users.all,
+    url: apiRoutes.categories.allAdmin,
     /* @ts-expect-error */
     headers: { Authorization: `Bearer ${token.value}` },
   },
@@ -58,7 +58,7 @@ onUnmounted(() => {
         :to="$router.resolve({ name: `admin-${ressource}-new` })"
         class="bg-primary-500 text-white p-2 rounded-md mb-2 inline-block"
       >
-        Nouvel utilisateur
+        Nouvelle catégorie
       </RouterLink>
       <AppTable
         columns="all"

@@ -18,13 +18,25 @@ const adminNav = {
   users: {
     key: 'admin-users',
     link: router.resolve({ name: routes.admin.children.find((r) => r.name === 'admin-users')?.name }).fullPath,
-    name: 'Users',
+    name: 'Utilisateurs',
     roles: Role.Admin,
   },
   products: {
     key: 'admin-products',
     link: router.resolve({ name: routes.admin.children.find((r) => r.name === 'admin-products')?.name }).fullPath,
-    name: 'Products',
+    name: 'Produits',
+    roles: Role.Accountant,
+  },
+  categories: {
+    key: 'admin-categories',
+    link: router.resolve({ name: routes.admin.children.find((r) => r.name === 'admin-categories')?.name }).fullPath,
+    name: 'Catégories',
+    roles: Role.Accountant,
+  },
+  orders: {
+    key: 'admin-orders',
+    link: router.resolve({ name: routes.admin.children.find((r) => r.name === 'admin-orders')?.name }).fullPath,
+    name: 'Commandes',
     roles: Role.Accountant,
   },
 };

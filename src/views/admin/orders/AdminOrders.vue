@@ -2,33 +2,26 @@
 /* eslint-disable import/no-cycle */
 import { AppLoading } from '@/components/main';
 import { AppTable } from '@/components/table';
-import type { TableColumn } from '@/components/table/AppTable.vue';
 import { routes } from '@/router';
 import useAuthStore from '@/stores/auth';
-import type { User } from '@/types';
 import { Role } from '@/types/user';
 import { useRequest } from '@/utils';
 import { apiRoutes } from '@/utils/apiRoutes';
 import { useRefStore } from '@/utils/refStore';
 import { onMounted, onUnmounted } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const { token, jwtLogin, hasRights } = useRefStore(useAuthStore());
-const ressource = 'users';
 
-const { resData, sendRequest, isLoading, error, abort } = useRequest<User[]>(
+const { resData, sendRequest, isLoading, error, abort } = useRequest<Record<string, any>[]>(
   {
-    url: apiRoutes.users.all,
+    url: apiRoutes.orders.all,
     /* @ts-expect-error */
     headers: { Authorization: `Bearer ${token.value}` },
   },
   false,
 );
-
-function colFilter(col: TableColumn) {
-  return !['Category'].includes(col.key) && col.key.indexOf('_') === -1;
-}
 
 async function fetchData() {
   jwtLogin().then((res) =>
@@ -39,6 +32,15 @@ async function fetchData() {
 function refresh() {
   fetchData();
 }
+
+const actions = [
+  {
+    label: 'Voir',
+    handler: (row: Record<string, any>) =>
+      // eslint-disable-next-line no-underscore-dangle
+      router.push(router.resolve({ name: 'admin-orders-view', query: { id: row._id } })),
+  },
+];
 
 onMounted(() => {
   fetchData();
@@ -54,19 +56,7 @@ onUnmounted(() => {
   <div v-else>
     <div v-if="error" class="text-red-500 p-2">{{ error }}</div>
     <div v-if="resData">
-      <RouterLink
-        :to="$router.resolve({ name: `admin-${ressource}-new` })"
-        class="bg-primary-500 text-white p-2 rounded-md mb-2 inline-block"
-      >
-        Nouvel utilisateur
-      </RouterLink>
-      <AppTable
-        columns="all"
-        :data="resData"
-        :columns-filter="colFilter"
-        :actions="['edit', 'delete']"
-        @refresh="refresh"
-      />
+      <AppTable columns="all" :data="resData" :actions="actions" @refresh="refresh" />
     </div>
   </div>
 </template>
