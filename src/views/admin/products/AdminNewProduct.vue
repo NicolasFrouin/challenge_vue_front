@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { NewRessource } from '@/components/admin';
+import useAuthStore from '@/stores/auth';
 import type { Category } from '@/types/category';
-import { apiRoutes, useRequest } from '@/utils';
+import { apiRoutes, useRefStore, useRequest } from '@/utils';
 import { SfInput, SfSelect } from '@storefront-ui/vue';
 import { reactive } from 'vue';
 import { z } from 'zod';
+
+const { token } = useRefStore(useAuthStore());
 
 const data = reactive({
   name: '',
@@ -24,7 +27,11 @@ const errors = reactive({
   category: '',
 });
 
-const { resData: categories } = useRequest<Category[]>({ url: apiRoutes.categories.all });
+const { resData: categories } = useRequest<Category[]>({
+  url: apiRoutes.categories.allAdmin,
+  // @ts-expect-error
+  headers: { Authorization: `Bearer ${token.value}` },
+});
 
 function validate() {
   // eslint-disable-next-line no-restricted-syntax, guard-for-in

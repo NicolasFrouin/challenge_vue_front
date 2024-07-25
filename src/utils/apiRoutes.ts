@@ -17,9 +17,11 @@ export const apiRoutes = {
     all: `${import.meta.env.VITE_API_URL}/categories`,
     allAdmin: `${import.meta.env.VITE_API_URL}/categories/admin`,
     bySlug: (slug: string) => `${import.meta.env.VITE_API_URL}/categories/${slug}`,
+    byId: (id: string) => `${import.meta.env.VITE_API_URL}/categories/id/${id}`,
     delete: (id: string) => `${import.meta.env.VITE_API_URL}/categories/${id}`,
     edit: (id: string) => `${import.meta.env.VITE_API_URL}/categories/${id}`,
     create: `${import.meta.env.VITE_API_URL}/categories`,
+    sellsByYear: `${import.meta.env.VITE_API_URL}/categories/admin/sells-by-year`,
   },
   users: {
     all: `${import.meta.env.VITE_API_URL}/users`,
@@ -27,6 +29,7 @@ export const apiRoutes = {
     delete: (id: string) => `${import.meta.env.VITE_API_URL}/users/${id}`,
     edit: (id: string) => `${import.meta.env.VITE_API_URL}/users/${id}`,
     create: `${import.meta.env.VITE_API_URL}/users`,
+    adminDashboard: `${import.meta.env.VITE_API_URL}/users/admin/dashboard`,
   },
   orders: {
     all: `${import.meta.env.VITE_API_URL}/orders`,
@@ -34,5 +37,6 @@ export const apiRoutes = {
     delete: (id: string) => `${import.meta.env.VITE_API_URL}/orders/${id}`,
     edit: (id: string) => `${import.meta.env.VITE_API_URL}/orders/${id}`,
     create: `${import.meta.env.VITE_API_URL}/orders`,
+    sellsByYear: `${import.meta.env.VITE_API_URL}/orders/admin/sells-by-year`,
   },
 };
