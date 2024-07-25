@@ -155,12 +155,13 @@ const actionItems = computed(() => [
   {
     icon: SfIconPerson,
     label: isLoggedIn() ? 'Mon Compte' : 'Se connecter',
-    ariaLabel: isLoggedIn() ? 'Mon Compte' : 'Se connecter',
+    // eslint-disable-next-line no-nested-ternary
+    ariaLabel: isLoggedIn() ? (hasRights(Role.Accountant) ? 'Administration' : 'Mon Compte') : 'Se connecter',
     role: 'login',
     onClick: () =>
       router.push({
         // eslint-disable-next-line no-nested-ternary
-        name: isLoggedIn() ? (hasRights(Role.Accountant) ? routes.admin.name : routes.account.name) : routes.login.name,
+        name: isLoggedIn() ? (hasRights(Role.Accountant) ? 'admin-home' : routes.account.name) : routes.login.name,
       }),
   },
   isLoggedIn()
