@@ -10,7 +10,7 @@ const { loading } = useRefStore(useAppState());
 
 <template>
   <AppHeader />
-  <main class="z-10 m-4 relative">
+  <main class="z-10 m-4 relative md:min-h-[calc(100vh-322px)]">
     <AppLoading v-if="loading" />
     <RouterView :key="$router.currentRoute.value.fullPath" />
     <CookiePopup />
